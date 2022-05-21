@@ -12,7 +12,6 @@ use mito.mito_pkg.all;
 
 entity control_unit is
     Port ( 
-
         clk                 : in  std_logic;
         rst_n               : in  std_logic;
         decoded_inst        : in  decoded_instruction_type;
@@ -32,7 +31,6 @@ end control_unit;
 
 
 architecture rtl of control_unit is
-
     architecture rtl of control_unit is
     type estados is (
     HALT,
