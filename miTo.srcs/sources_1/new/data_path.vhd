@@ -25,16 +25,12 @@ entity data_path is
     decoded_instruction : out decoded_instruction_type;   --Instrução decodificada pelo decoder.
     
     --Sinais da ULA
-    alu_op              : in std_logic_vector (1 downto 0);  --Seleciona operação da ULA (ADD, SUB, AND, OR).
-    --zero                : out std_logic;     --Saída da ULA é zero
-    --alu_out             : out std_logic_vector (15 downto 0)  --Saída da ULA
+    alu_op              : in std_logic;
+    zero_flag           : out std_logic;     --Indica que a operação matemática feita na ULA deu zero.
 
     --Sinais da memória
     instruction           : in  std_logic_vector (15 downto 0);       --Instrução saindo da memória
     ram_addr              : out  std_logic_vector (15 downto 0);       --Dado a ser armazenado na memória
-    --mem_read            : in std_logic;     --Habilita leitura da memória (Para loads).
-    --mem_write           : in std_logic;     --Habilita escrita na memória (Para stores).
-    --s1_in               : in  std_logic_vector (15 downto 0);       --Dado a ser armazenado na memória
 
     --Sinais banco de registrador
     reg_write           : in std_logic_vector (1 downto 0);     --Habilita escrita no banco de registradores.
@@ -42,12 +38,6 @@ entity data_path is
     reg1                : in  std_logic_vector (15 downto 0);
     reg2                : in  std_logic_vector (15 downto 0);
     reg3                : in  std_logic_vector (15 downto 0);
-    --s0                : in std_logic_vector (15 downto 0);
-    --s1                : in std_logic_vector (15 downto 0);
-    --data              : out std_logic_vector (15 downto 0);
-
-    --Registrador de endereço
-    --reg_addr            : out std_logic_vector (7 downto 0);
   );
 end data_path;
 
@@ -61,7 +51,6 @@ architecture rtl of data_path is
   signal s1                   : std_logic_vector(15 downto 0);
   signal data                 : std_logic_vector(15 downto 0); 
   signal ula_out              : std_logic_vector(15 downto 0);
-  signal zero                 : std_logic
   signal xnor                 : std_logic
   signal and                  : std_logic
   signal or                   : std_logic
@@ -76,7 +65,6 @@ begin
   --Decoder
   process (instruction)
   begin
-    --decoded_instruction <= I_NOP;
     a_addr <= "00";
     b_addr <= "00";
     c_addr <= "00";
@@ -85,25 +73,25 @@ begin
     if (instruction(15) = "0") then 
       case(instruction(14 downto 13)) is 
         when "01" =>
-         decoded_instruction <= ADD
+         decoded_instruction <= I_ADD
         when "10" =>
-         decoded_instruction <= BEQ
+         decoded_instruction <= I_BEQ
         when "11" =>
-         decoded_instruction <= LOAD
+         decoded_instruction <= I_LOAD
         when others =>
-         decoded_instruction <= HALT
+         decoded_instruction <= I_HALT
       end case;
 
     elsif (instruction(15) = "1") then 
       case(instruction(14 downto 13)) is 
         when "01" =>
-         decoded_instruction <= SUB
+         decoded_instruction <= I_SUB
         when "10" =>
-         decoded_instruction <= BNE
+         decoded_instruction <= I_BNE
         when "11" =>
-         decoded_instruction <= STORE
+         decoded_instruction <= I_STORE
         when others =>
-         decoded_instruction <= JUMP
+         decoded_instruction <= I_JUMP
       end case;
     end if ;
 
@@ -126,7 +114,6 @@ begin
         endif
       when others =>  --JUMP E HALT
         reg_addr <= instruction(7 downto 0);
-        decoded_instruction <= JUMP
     end case;
   end process
 
@@ -144,9 +131,9 @@ begin
       ula_out <=  s0 - s1;  --SUB
     end if;
     if (ula_out = x"00") then
-      zero_op <= '1';
+      zero_flag <= '1';
     else
-      zero_op <= '0';
+      zero_flag <= '0';
     end if;
   end process;
 
