@@ -121,6 +121,24 @@ begin
   --Mux da RAM
   ram_addr <= reg_addr when (pc_enable = '1') else program_counter;
 
+
+  --Mux Jump or (Branch and XNOR)
+  process(clk,rst_n)
+    if(rst_n = '1') then
+      PC <= x"00";
+    else
+      if (jump or (branch and (not(is_beq XOR zero))) then
+        PC <= reg_addr;
+      else
+        if(halt = '1') then
+          PC <= PC;
+        else
+          PC <= PC + 1;
+        endif;
+      endif;
+    endif;
+  end process;
+
   --Controle da ULA
   process(s0,s1,alu_op)
   begin

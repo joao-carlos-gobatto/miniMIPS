@@ -14,20 +14,21 @@ use mito.mito_pkg.all;
 entity memory is
 	port(		
         clk                 : in  std_logic;
-        escrita             : in  std_logic;
+        mem_write           : in  std_logic;
+		mem_read			: in  std_logic;
         rst_n               : in  std_logic;        
-        entrada_memoria     : in  std_logic_vector(31 downto 0);
-        endereco_memoria    : in  std_logic_vector(8  downto 0);
-        saida_memoria       : out std_logic_vector(31 downto 0)
-        );
+        entrada_memoria     : in  std_logic_vector(15 downto 0);
+        ram_addr		    : in  std_logic_vector(7  downto 0);
+        instruction         : out std_logic_vector(15 downto 0)
+    );
         
 end memory;
 
 architecture rtl of memory is
 
-	-- 256 words of 4 bytes (32 bits)
+	-- 256 words of 1 byte (8 bits)
 	subtype palavra is std_logic_vector(15 downto 0);
-	type memory is array (0 to 511) of palavra;
+	type memory is array (0 to 255) of palavra;
 	signal mem : memory;
 	
 begin 
@@ -37,7 +38,6 @@ begin
 			
 	if(rst_n = '1') then
 			--  reset memory when rst_n = 1 
-			 
 			mem(0)    <= "0000000000000000"; 
 			mem(1)    <= "0000000000000000";
 			mem(2)    <= "0000000000000000";
@@ -296,17 +296,13 @@ begin
 			mem(255)  <= "0000000000000000";
 	else
 	    -- read from memory
-		if((escrita = '0'))then 
-		        saida_memoria(31 downto 16) <= mem(to_integer(unsigned(endereco_memoria)));
-				saida_memoria(15 downto 0) <= mem(to_integer(unsigned(endereco_memoria+1)));
+		if((mem_write = '1'))then 
+		        instruction(15 downto 0) <= mem(to_integer(unsigned(ram_addr)));
 		-- write in memory		
-		elsif ((escrita = '1')) then 		
-			mem(to_integer(unsigned(endereco_memoria))) <= entrada_memoria(31 downto 16);
-			mem(to_integer(unsigned(endereco_memoria+1))) <= entrada_memoria(15 downto 0);
+		elsif ((mem_read = '1')) then 		
+			mem(to_integer(unsigned(ram_addr))) <= entrada_memoria(15 downto 0);
 		end if;
 	end if;		
-
-						
 end process;
 
 end rtl;

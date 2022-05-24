@@ -102,7 +102,7 @@ begin
                             if(zero_flag = '1') then
                                 is_beq <= '1';
                                 alu_op <= '0';
-                                prox_estado <= ULA;
+                                prox_estado <= BRANCH;
                             else
                                 prox_estado <= PROX;
                             
@@ -110,7 +110,7 @@ begin
                             if(zero_flag = '0') then
                                 is_beq <= '0';
                                 alu_op <= '0';
-                                prox_estado <= ULA;
+                                prox_estado <= BRANCH;
                             else
                                 prox_estado <= PROX;
 
