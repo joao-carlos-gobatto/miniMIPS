@@ -33,7 +33,7 @@ architecture rtl of memory is
 	
 begin 
 
-process(clk)	
+process(clk, rst_n, mem_read, mem, ram_addr, mem_write,data)	
 begin
 			
 	if(rst_n = '1') then

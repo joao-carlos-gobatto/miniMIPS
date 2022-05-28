@@ -14,23 +14,12 @@ entity miTo is
     rst_n                       : in  std_logic;
     clk                         : in  std_logic;
     instruction                 : in  std_logic_vector (15 downto 0);   -- in data read from memory
-    ram_addr                    : out std_logic_vector (15 downto 0);   -- out_reg or alu_out to memory 
+    ram_addr                    : out std_logic_vector (7 downto 0);   -- out_reg or alu_out to memory 
     mem_write                   : out std_logic
   );
 end miTo;
 
 architecture rtl of miTo is
-  type decoded_instruction_type is (
-		I_HALT,
-		I_ADD,
-		I_SUB,
-		I_LOAD,
-		I_STORE,
-		I_JUMP,
-		I_BEQ,
-		I_BNE
-	);
-
     type estados is (
         HALT_E,
         ADD,

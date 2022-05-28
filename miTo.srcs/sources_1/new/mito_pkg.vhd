@@ -35,7 +35,7 @@ package mito_pkg is
 		zero_flag          		: out std_logic;
 		data                  	: out std_logic_vector(15 downto 0);
 		instruction           	: in  std_logic_vector (15 downto 0);
-		ram_addr              	: out std_logic_vector (15 downto 0)
+		ram_addr              	: out std_logic_vector (7 downto 0);
 		reg_write				: in  std_logic
 	);
   end component;

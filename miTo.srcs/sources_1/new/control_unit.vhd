@@ -72,7 +72,7 @@ begin
                 end if;
             end if;
     end process;
-    process(clk,estado_atual)
+    process(clk,estado_atual,decoded_instruction, zero_flag)
         begin
             prox_estado <= estado_atual;
             case(estado_atual) is

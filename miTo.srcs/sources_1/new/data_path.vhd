@@ -29,7 +29,7 @@ entity data_path is
     --Sinais da memória
     data                  : out std_logic_vector(15 downto 0);        --Dado saindo do reg2 para memória
     instruction           : in  std_logic_vector (15 downto 0);       --Instrução saindo da memória
-    ram_addr              : out  std_logic_vector (15 downto 0);       --Dado a ser armazenado na memória
+    ram_addr              : out  std_logic_vector (7 downto 0);       --Dado a ser armazenado na memória
     
     --Sinais do Banco de Registradores
     reg_write             : in std_logic
@@ -39,7 +39,7 @@ end data_path;
 
 architecture rtl of data_path is
   type reg_bank_type is array(natural range <>) of std_logic_vector(15 downto 0);
-  signal banco_de_reg         : reg_bank_type(1 to 0);
+  signal banco_de_reg         : reg_bank_type(0 to 1);
   signal program_counter      : std_logic_vector(7 downto 0);
   signal reg_addr             : std_logic_vector(7 downto 0);
   signal a_addr               : std_logic_vector(1 downto 0);
@@ -114,7 +114,7 @@ begin
 
 
   --Mux da RAM
-  process(pc_enable)
+  process(pc_enable, reg_addr, program_counter)
   begin
     if(pc_enable = '1') then
         ram_addr <= reg_addr;
@@ -126,7 +126,7 @@ begin
 
 
   --Mux Jump or (Branch and XNOR)
-  process(jump,branch,is_beq,zero)
+  process(rst_n, jump,branch, is_beq, zero, halt, reg_addr, program_counter)
   begin
     if(rst_n = '1') then
       program_counter <= x"00";
@@ -148,7 +148,7 @@ begin
   end process;
 
   --Controle da ULA
-  process(s0,s1,alu_op)
+  process(s0,s1,alu_op,ula_out)
   begin
     data <= s1;
     if (alu_op = '1') then
