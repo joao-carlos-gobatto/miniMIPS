@@ -20,7 +20,7 @@ entity control_unit is
         mem_write           : out std_logic;    --Habilita escrita na memória (Para stores).
         mem_read            : out std_logic;    --Habilita leitura da memória (Para loads).
         
-        zero_flag           : in std_logic      --Sinaliza 0 na operação matemática feita pela ULA.
+        zero_flag           : in std_logic;     --Sinaliza 0 na operação matemática feita pela ULA.
         alu_op              : out std_logic;    --Seleciona operação da ULA (ADD, SUB, AND, OR).
         is_beq              : out std_logic;    --Informa se a instrução de branch é BEQ ou se é BNEG.
         jump                : out std_logic;    --Informa se é uma instrução de JUMP.

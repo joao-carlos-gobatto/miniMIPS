@@ -17,7 +17,7 @@ entity memory is
         mem_write           : in  std_logic;
 		mem_read			: in  std_logic;
         rst_n               : in  std_logic;        
-        entrada_memoria     : in  std_logic_vector(15 downto 0);
+        data		        : in  std_logic_vector(15 downto 0);
         ram_addr		    : in  std_logic_vector(7  downto 0);
         instruction         : out std_logic_vector(15 downto 0)
     );
@@ -296,11 +296,11 @@ begin
 			mem(255)  <= "0000000000000000";
 	else
 	    -- read from memory
-		if((mem_write = '1'))then 
-		        instruction(15 downto 0) <= mem(to_integer(unsigned(ram_addr)));
+		if(mem_read = '1') then 
+		    instruction(15 downto 0) <= mem(to_integer(unsigned(ram_addr)));
 		-- write in memory		
-		elsif ((mem_read = '1')) then 		
-			mem(to_integer(unsigned(ram_addr))) <= entrada_memoria(15 downto 0);
+		elsif (mem_write = '1') then 		
+			mem(to_integer(unsigned(ram_addr))) <= data(15 downto 0);
 		end if;
 	end if;		
 end process;

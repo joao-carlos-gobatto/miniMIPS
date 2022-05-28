@@ -29,15 +29,9 @@ entity data_path is
     zero_flag           : out std_logic;     --Indica que a operação matemática feita na ULA deu zero.
 
     --Sinais da memória
+    data                  : out std_logic_vector(15 downto 0);        --Dado saindo do reg2 para memória
     instruction           : in  std_logic_vector (15 downto 0);       --Instrução saindo da memória
     ram_addr              : out  std_logic_vector (15 downto 0);       --Dado a ser armazenado na memória
-
-    --Sinais banco de registrador
-    reg_write           : in std_logic_vector (1 downto 0);     --Habilita escrita no banco de registradores.
-    reg0                : in  std_logic_vector (15 downto 0);
-    reg1                : in  std_logic_vector (15 downto 0);
-    reg2                : in  std_logic_vector (15 downto 0);
-    reg3                : in  std_logic_vector (15 downto 0);
   );
 end data_path;
 
@@ -49,11 +43,7 @@ architecture rtl of data_path is
   signal reg_addr             : std_logic_vector(7 downto 0);
   signal s0 	                : std_logic_vector(15 downto 0);
   signal s1                   : std_logic_vector(15 downto 0);
-  signal data                 : std_logic_vector(15 downto 0); 
   signal ula_out              : std_logic_vector(15 downto 0);
-  signal xnor                 : std_logic
-  signal and                  : std_logic
-  signal or                   : std_logic
     
 begin
     
@@ -154,6 +144,4 @@ begin
       zero_flag <= '0';
     end if;
   end process;
-
-
 end rtl;
