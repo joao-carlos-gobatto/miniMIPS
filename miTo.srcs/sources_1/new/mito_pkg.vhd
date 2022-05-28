@@ -11,7 +11,7 @@ use IEEE.STD_LOGIC_UNSIGNED.all;
 package mito_pkg is
   --NOVAS
   	type decoded_instruction_type is (
-		I_HALT
+		I_HALT,
 		I_ADD,
 		I_SUB,
 		I_LOAD,
@@ -23,9 +23,8 @@ package mito_pkg is
   
   component data_path
 	Port (
-		clk                		: in  std_logic
-		rst_n              		: in  std_logic
-		decoded_inst       		: out decoded_instruction_type
+		clk                		: in  std_logic;
+		rst_n              		: in  std_logic;
 		is_beq             		: in  std_logic;
 		jump               		: in  std_logic;
 		branch             		: in  std_logic;
@@ -36,7 +35,8 @@ package mito_pkg is
 		zero_flag          		: out std_logic;
 		data                  	: out std_logic_vector(15 downto 0);
 		instruction           	: in  std_logic_vector (15 downto 0);
-		ram_addr              	: out std_logic_vector (15 downto 0);
+		ram_addr              	: out std_logic_vector (15 downto 0)
+		reg_write				: in  std_logic
 	);
   end component;
 
@@ -44,7 +44,7 @@ package mito_pkg is
     Port ( 
 		clk                 	: in  std_logic;
         rst_n               	: in  std_logic;
-        decoded_inst        	: in  decoded_instruction_type;
+        decoded_instruction   	: in  decoded_instruction_type;
         reg_write           	: out std_logic;
         mem_write           	: out std_logic;
         mem_read            	: out std_logic;
@@ -54,7 +54,7 @@ package mito_pkg is
         jump                	: out std_logic;
         branch              	: out std_logic;
         pc_enable           	: out std_logic;
-        halt                	: out std_logic;
+        halt                	: out std_logic
 	);
   end component;
   
@@ -66,7 +66,7 @@ package mito_pkg is
 		mem_read				: in  std_logic;
         ram_addr		    	: in  std_logic_vector(7  downto 0);
 		data					: in  std_logic_vector(15 downto 0);
-        instruction         	: out std_logic_vector(15 downto 0);
+        instruction         	: out std_logic_vector(15 downto 0)
 	);
   end component;
 
@@ -77,7 +77,7 @@ package mito_pkg is
 		ram_addr    			: in  std_logic_vector (7  downto 0);
 		instruction 			: in  std_logic_vector (15 downto 0);  
 		data			 		: out std_logic_vector (15 downto 0); 
-		write_enable 			: out std_logic;
+		write_enable 			: out std_logic
 	);
   end component;
   
@@ -86,7 +86,7 @@ package mito_pkg is
 		signal clk 				: in  std_logic := '0';
 		signal reset 			: in  std_logic;
 		signal instruction	 	: in  std_logic_vector (15 downto 0);
-		signal ram_addr		 	: out std_logic_vector (15 downto 0);
+		signal ram_addr		 	: out std_logic_vector (15 downto 0)
 	); 
   end component;
 

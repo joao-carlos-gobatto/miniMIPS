@@ -2,19 +2,18 @@
 -- Company: UERGS
 -- Engineers: Débora Silva Garcia e João Carlos Gobatto da Cunha
 ----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.all;
 library mito;
 use mito.mito_pkg.all;
 
-entity control_unit is
+
+entity control_unit is    
     Port ( 
         clk                 : in  std_logic;
         rst_n               : in  std_logic;
-        decoded_inst        : in  decoded_instruction_type;
+        decoded_instruction : in  decoded_instruction_type;
 
         reg_write           : out std_logic;    --Habilita escrita no banco de registradores.
         mem_write           : out std_logic;    --Habilita escrita na memória (Para stores).
@@ -26,28 +25,39 @@ entity control_unit is
         jump                : out std_logic;    --Informa se é uma instrução de JUMP.
         branch              : out std_logic;    --Informa se é uma instrução de Branch.
         pc_enable           : out std_logic;    --Escolhe dado vindo do registrador de endereço ou do PC.
-        halt                : out std_logic;    --Informa parada do processo.
+        halt                : out std_logic    --Informa parada do processo.
     );
 end control_unit;
 
 
 architecture rtl of control_unit is
-    architecture rtl of control_unit is
+    type decoded_instruction_type is (
+		I_HALT,
+		I_ADD,
+		I_SUB,
+		I_LOAD,
+		I_STORE,
+		I_JUMP,
+		I_BEQ,
+		I_BNE
+	);
+
     type estados is (
-        HALT,
+        HALT_E,
         ADD,
         SUB,
         LOAD,
         STORE,
-        JUMP,
+        JUMP_E,
         BEQ,
         BNE,
         ULA,        --Estado em que a ULA faz a operação.
-        BRANCH,     --Estado em que o sistema da um branch.
+        BRANCH_E,     --Estado em que o sistema da um branch.
         FETCH,      --Estado em que a unidade de controle pega a instrução.
         DECODE,     --Control unit decodifica instrução e define o próximo estado.
         PROX        --Prepara os sinais para o próximo FETCH.
     );
+
     signal estado_atual : estados;
     signal prox_estado : estados;
 
@@ -96,27 +106,27 @@ begin
                             prox_estado <= STORE;
 
                         when I_JUMP =>
-                            prox_estado <= JUMP;
+                            prox_estado <= JUMP_E;
 
                         when I_BEQ =>
                             if(zero_flag = '1') then
                                 is_beq <= '1';
                                 alu_op <= '0';
-                                prox_estado <= BRANCH;
+                                prox_estado <= BRANCH_E;
                             else
                                 prox_estado <= PROX;
-                            
+                            end if;
                         when I_BNE =>
                             if(zero_flag = '0') then
                                 is_beq <= '0';
                                 alu_op <= '0';
-                                prox_estado <= BRANCH;
+                                prox_estado <= BRANCH_E;
                             else
                                 prox_estado <= PROX;
-
+                            end if;
                         when I_HALT =>
                             halt <= '1';
-                            prox_estado <= HALT;
+                            prox_estado <= HALT_E;
                     end case;
 
                 when PROX =>
@@ -140,11 +150,11 @@ begin
                     mem_write <= '1';
                     prox_estado <= PROX;
 
-                when JUMP => 
+                when JUMP_E => 
                     jump <= '1';
                     prox_estado <= PROX;
 
-                when BRANCH =>
+                when BRANCH_E =>
                     branch <= '1';
                     prox_estado <= PROX;
 
@@ -163,7 +173,7 @@ begin
                     reg_write <= '0';
                     mem_read <='0';
                     mem_read <= '0';
-                    prox_estado <= HALT;
+                    prox_estado <= HALT_E;
             end case ;
     end process ;
 end rtl;
