@@ -22,6 +22,7 @@ entity control_unit is
         zero_flag           : in std_logic;     --Sinaliza 0 na operação matemática feita pela ULA.
         alu_op              : out std_logic;    --Seleciona operação da ULA (ADD, SUB, AND, OR).
         is_beq              : out std_logic;    --Informa se a instrução de branch é BEQ ou se é BNEG.
+        is_load             : out std_logic;    --Informa se a instrução é Load.
         jump                : out std_logic;    --Informa se é uma instrução de JUMP.
         branch              : out std_logic;    --Informa se é uma instrução de Branch.
         pc_enable           : out std_logic;    --Escolhe dado vindo do registrador de endereço ou do PC.
@@ -51,18 +52,18 @@ architecture rtl of control_unit is
         JUMP_E,
         BEQ,
         BNE,
-        ULA,        --Estado em que a ULA faz a operação.
-        BRANCH_E,     --Estado em que o sistema da um branch.
-        FETCH,      --Estado em que a unidade de controle pega a instrução.
-        DECODE,     --Control unit decodifica instrução e define o próximo estado.
-        PROX        --Prepara os sinais para o próximo FETCH.
+        ULA,        
+        BRANCH_E,   
+        FETCH,      
+        DECODE,     
+        PROX        
     );
 
     signal estado_atual : estados;
     signal prox_estado : estados;
 
 begin
-    process (clk)
+    process (clk, rst_n)
         begin
             if (clk'event and clk='1') then
                 if (rst_n='0') then
@@ -72,11 +73,12 @@ begin
                 end if;
             end if;
     end process;
-    process(clk,estado_atual,decoded_instruction, zero_flag)
+    
+    process(clk)
         begin
             prox_estado <= estado_atual;
             case(estado_atual) is
-                when FETCH =>
+                when FETCH =>   
                     pc_enable <= '0';
                     mem_read <= '1';
                     mem_write <= '0';
@@ -86,6 +88,7 @@ begin
                     branch <= '0';
                     is_beq <='0';
                     alu_op <='0';
+                    is_load <= '0';
                     prox_estado <= DECODE;
 
                 when DECODE =>
@@ -100,6 +103,7 @@ begin
                             prox_estado <= ULA;
 
                         when I_LOAD =>
+                            is_load <= '1';
                             prox_estado <= LOAD;
 
                         when I_STORE =>
@@ -139,6 +143,7 @@ begin
                     branch <= '0';
                     is_beq <='0';
                     alu_op <='0';
+                    is_load <= '0';
                     prox_estado <= FETCH;
 
                 when LOAD =>
@@ -164,7 +169,7 @@ begin
                     prox_estado <= PROX;
 
                 when others =>  --HALT
-                    halt <= '1';
+                    halt <= '0';
                     jump <= '0';
                     branch <= '0';
                     pc_enable <='0';

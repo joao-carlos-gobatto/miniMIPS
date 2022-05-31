@@ -1,6 +1,6 @@
 Vivado Simulator 2020.2
 Copyright 1986-1999, 2001-2020 Xilinx, Inc. All Rights Reserved.
-Running: C:/Xilinx/Vivado/2020.2/bin/unwrapped/win64.o/xelab.exe -wto 6b16120a2d824e05bcce677717a8d6fd --incr --debug typical --relax --mt 2 -L mito -L secureip --snapshot testebench_behav mito.testebench -log elaborate.log 
+Running: C:/Xilinx/Vivado/2020.2/bin/unwrapped/win64.o/xelab.exe -wto 6b16120a2d824e05bcce677717a8d6fd --incr --debug typical --relax --mt 2 -L mito -L secureip --snapshot miTo_behav mito.miTo -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
 Completed static elaboration
@@ -17,6 +17,5 @@ Compiling package ieee.numeric_std
 Compiling architecture rtl of entity mito.control_unit [control_unit_default]
 Compiling architecture rtl of entity mito.data_path [data_path_default]
 Compiling architecture rtl of entity mito.memory [memory_default]
-Compiling architecture rtl of entity mito.miTo [mito_default]
-Compiling architecture behavioral of entity mito.testebench
-Built simulation snapshot testebench_behav
+Compiling architecture rtl of entity mito.mito
+Built simulation snapshot miTo_behav

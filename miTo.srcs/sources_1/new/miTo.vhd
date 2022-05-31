@@ -13,9 +13,11 @@ entity miTo is
   Port (
     rst_n                       : in  std_logic;
     clk                         : in  std_logic;
-    instruction                 : in  std_logic_vector (15 downto 0);   -- in data read from memory
-    ram_addr                    : out std_logic_vector (7 downto 0);   -- out_reg or alu_out to memory 
-    mem_write                   : out std_logic
+    instruction                 : out std_logic_vector (15 downto 0);
+    ram_addr                    : out std_logic_vector (7 downto 0); 
+    mem_write                   : out std_logic;
+    reg_write                   : out std_logic;
+    halt                        : out std_logic
   );
 end miTo;
 
@@ -41,6 +43,7 @@ architecture rtl of miTo is
   signal is_beq_s                      : std_logic;
   signal jump_s                        : std_logic;
   signal branch_s                      : std_logic;
+  signal is_load_s                     : std_logic;
   signal pc_enable_s                   : std_logic;
   signal halt_s                        : std_logic;
   signal alu_op_s                      : std_logic;
@@ -63,6 +66,7 @@ control_unit_i : control_unit
     zero_flag                  => zero_flag_s,
     alu_op                     => alu_op_s,
     is_beq                     => is_beq_s,
+    is_load                    => is_load_s,
     jump                       => jump_s,
     branch                     => branch_s,
     pc_enable                  => pc_enable_s,
@@ -80,6 +84,7 @@ data_path_i : data_path
     halt                       => halt_s,
     decoded_instruction        => decoded_instruction_s,
     alu_op                     => alu_op_s,
+    is_load                    => is_load_s,
     zero_flag                  => zero_flag_s,
     instruction                => instruction_s,
     data                       => data_s,
@@ -97,5 +102,11 @@ memory_i : memory
     ram_addr		           => ram_addr_s,
     instruction                => instruction_s
   );
+
+  instruction <= instruction_s;
+  ram_addr  <= ram_addr_s;
+  mem_write <= mem_write_s;
+  reg_write <= reg_write_s;
+  halt  <= halt_s;
  
 end rtl;
