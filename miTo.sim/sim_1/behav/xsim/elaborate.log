@@ -1,21 +1,11 @@
 Vivado Simulator 2020.2
 Copyright 1986-1999, 2001-2020 Xilinx, Inc. All Rights Reserved.
-Running: C:/Xilinx/Vivado/2020.2/bin/unwrapped/win64.o/xelab.exe -wto 6b16120a2d824e05bcce677717a8d6fd --incr --debug typical --relax --mt 2 -L mito -L secureip --snapshot miTo_behav mito.miTo -log elaborate.log 
+Running: C:/Xilinx/Vivado/2020.2/bin/unwrapped/win64.o/xelab.exe -wto 6b16120a2d824e05bcce677717a8d6fd --incr --debug typical --relax --mt 2 -L mito -L secureip --snapshot testebench_behav mito.testebench -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
-Completed static elaboration
-Starting simulation data flow analysis
-Completed simulation data flow analysis
-Time Resolution for simulation is 1ps
-Compiling package std.standard
-Compiling package std.textio
-Compiling package ieee.std_logic_1164
-Compiling package ieee.std_logic_arith
-Compiling package ieee.std_logic_unsigned
-Compiling package mito.mito_pkg
-Compiling package ieee.numeric_std
-Compiling architecture rtl of entity mito.control_unit [control_unit_default]
-Compiling architecture rtl of entity mito.data_path [data_path_default]
-Compiling architecture rtl of entity mito.memory [memory_default]
-Compiling architecture rtl of entity mito.mito
-Built simulation snapshot miTo_behav
+ERROR: [VRFC 10-3032] 'mito.control_unit' failed to restore
+ERROR: [VRFC 10-3032] 'mito.control_unit' failed to restore
+ERROR: [VRFC 10-3032] 'mito.control_unit' failed to restore
+ERROR: [VRFC 10-3032] 'mito.control_unit' failed to restore
+WARNING: [VRFC 10-4940] 'control_unit' remains a black box since it has no binding entity [D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/miTo.vhd:59]
+ERROR: [XSIM 43-3321] Static elaboration of top level VHDL design unit testebench in library work failed.

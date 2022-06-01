@@ -13,6 +13,7 @@ entity miTo is
   Port (
     rst_n                       : in  std_logic;
     clk                         : in  std_logic;
+    decoded_instruction         : out decoded_instruction_type;
     instruction                 : out std_logic_vector (15 downto 0);
     ram_addr                    : out std_logic_vector (7 downto 0); 
     mem_write                   : out std_logic;
@@ -31,11 +32,11 @@ architecture rtl of miTo is
         JUMP_E,
         BEQ,
         BNE,
-        ULA,        --Estado em que a ULA faz a operação.
-        BRANCH_E,     --Estado em que o sistema da um branch.
-        FETCH,      --Estado em que a unidade de controle pega a instrução.
-        DECODE,     --Control unit decodifica instrução e define o próximo estado.
-        PROX        --Prepara os sinais para o próximo FETCH.
+        ULA,        
+        BRANCH_E,   
+        FETCH,      
+        DECODE,     
+        PROX        
     );
 
   signal decoded_instruction_s         : decoded_instruction_type;
@@ -103,10 +104,7 @@ memory_i : memory
     instruction                => instruction_s
   );
 
-  instruction <= instruction_s;
   ram_addr  <= ram_addr_s;
-  mem_write <= mem_write_s;
-  reg_write <= reg_write_s;
-  halt  <= halt_s;
+  decoded_instruction <= decoded_instruction_s;
  
 end rtl;

@@ -74,22 +74,24 @@ package mito_pkg is
 
   component mito
 	Port (
-		rst_n                       : in  std_logic;
-		clk                         : in  std_logic;
-		instruction                 : out  std_logic_vector (15 downto 0);
-		ram_addr                    : out std_logic_vector (7 downto 0);
-		mem_write                   : out std_logic;
-		reg_write                   : out std_logic;
-		halt                        : out std_logic
+		rst_n                   : in  std_logic;
+		clk                     : in  std_logic;
+		decoded_instruction		: out decoded_instruction_type;
+		instruction             : out std_logic_vector (15 downto 0);
+		ram_addr                : out std_logic_vector (7 downto 0);
+		mem_write               : out std_logic;
+		reg_write               : out std_logic;
+		halt                    : out std_logic
 	);
   end component;
   
  component testbench is
 	Port (
-		clk 				: in  std_logic := '0';
-		reset 				: in  std_logic;
-		instruction	 		: in  std_logic_vector (15 downto 0);
-		ram_addr		 	: in  std_logic_vector (15 downto 0)
+		clk 					: in  std_logic := '0';
+		reset 					: in  std_logic;
+		decoded_instruction		: in  decoded_instruction_type;
+		instruction	 			: in  std_logic_vector (15 downto 0);
+		ram_addr		 		: in  std_logic_vector (15 downto 0)
 	); 
   end component;
 
