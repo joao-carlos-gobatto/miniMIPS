@@ -2,10 +2,10 @@
 # Webtalk v2020.2 (64-bit)
 # SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
 # IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
-# Start of session at: Mon May 30 23:02:26 2022
-# Process ID: 14508
+# Start of session at: Wed Jun 29 08:43:47 2022
+# Process ID: 15436
 # Current directory: D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.sim/sim_1/behav/xsim
-# Command line: wbtcv.exe -mode batch -source D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.sim/sim_1/behav/xsim/xsim.dir/miTo_behav/webtalk/xsim_webtalk.tcl -notrace
+# Command line: wbtcv.exe -mode batch -source D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.sim/sim_1/behav/xsim/xsim.dir/testebench_behav/webtalk/xsim_webtalk.tcl -notrace
 # Log file: D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.sim/sim_1/behav/xsim/webtalk.log
 # Journal file: D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.sim/sim_1/behav/xsim\webtalk.jou
 #-----------------------------------------------------------

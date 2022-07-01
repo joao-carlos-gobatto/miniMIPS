@@ -1,7 +1,0 @@
-Running: xsim.dir/miTo_behav/xsimk.exe -simmode gui -wdb miTo_behav.wdb -simrunnum 0 -socket 49704
-Design successfully loaded
-Design Loading Memory Usage: 6436 KB (Peak: 6436 KB)
-Design Loading CPU Usage: 0 ms
-Simulation completed
-Simulation Memory Usage: 6996 KB (Peak: 6996 KB)
-Simulation CPU Usage: 15 ms

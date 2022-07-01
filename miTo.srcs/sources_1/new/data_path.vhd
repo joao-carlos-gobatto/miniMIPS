@@ -6,6 +6,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.all;
+
 library mito;
 use mito.mito_pkg.all;
 
@@ -27,7 +28,7 @@ entity data_path is
     zero_flag             : out std_logic;     --Indica que a opera莽茫o matem谩tica feita na ULA deu zero.
 
     --Sinais da mem贸ria
-    data                  : out std_logic_vector(15 downto 0);        --Dado saindo do reg2 para mem贸ria
+    reg_b_out             : out std_logic_vector(15 downto 0);        --Dado saindo do reg2 para mem贸ria
     instruction           : in  std_logic_vector (15 downto 0);       --Instru莽茫o saindo da mem贸ria
     ram_addr              : out std_logic_vector (7 downto 0);       --Dado a ser armazenado na mem贸ria
     
@@ -39,38 +40,191 @@ entity data_path is
 end data_path;
 
 architecture rtl of data_path is
+  --Registradores e entradas do banco de registradores
+  signal r0 : std_logic_vector(15 downto 0);
+  signal r1 : std_logic_vector(15 downto 0);
+  signal r2 : std_logic_vector(15 downto 0);
+  signal r3 : std_logic_vector(15 downto 0); 
+  signal addr_a   : std_logic_vector(1 downto 0);
+  signal addr_b   : std_logic_vector(1 downto 0);
+  signal addr_c   : std_logic_vector(1 downto 0);
+  signal data     : std_logic_vector(15 downto 0);
+  
+  --Registrador de endere鏾 de mem髍ia
   signal reg_addr : std_logic_vector(7 downto 0);
+  
+  --Outros
   signal pc       : std_logic_vector(7 downto 0);
   signal inst_reg : std_logic_vector(15 downto 0);
-    
+  signal reg_data :std_logic_vector(15 downto 0);
+  signal reg_a    : std_logic_vector(15 downto 0);
+  signal reg_b    : std_logic_vector(15 downto 0);
+  signal alu_res  : std_logic_vector(15 downto 0);
+  
 begin
-
     program_counter:process(clk)
     begin
-        if(rst_n='1') then
+        if(rst_n = '1') then
             pc <= "00000000";
         else
-            if(clk'event or clk='1') then
-                pc <= pc + 1;
+            if(clk = '1' and clk'event) then
+                if(pc_enable = '1') then
+                    if(halt='1') then
+                        pc <= pc;
+                    else                        
+                        pc <= pc + 1;
+                    end if;
+                end if;
+            end if;
+        end if;
+    end process;
+   
+    ram_gets_pc:process(clk)
+    begin
+        if(clk='1' and clk'event) then
+            if(is_load = '1') then
+                ram_addr <= reg_addr;
+            else
+                ram_addr <= pc;
             end if;
         end if;
     end process;
     
-    ram_addr <= pc;
-    
+    reg_addr_load: process(clk)
+    begin
+        if(clk='1' and clk'event) then
+            reg_addr <= instruction(7 downto 0);
+        end if;
+    end process;
+        
     inst_load: process(clk)
     begin
-        inst_reg <= instruction;
+        if(clk='1' and clk'event) then
+            inst_reg <= instruction;
+        end if;
     end process;
     
     --Decoder
-    decoded_instruction <= I_HALT when instruction(15 downto 13) = "000" else
-          I_ADD  when instruction(15 downto 13) = "001" else
-          I_BEQ    when instruction(15 downto 13) = "010" else
-          I_LOAD    when instruction(15 downto 13) = "011" else
-          I_JUMP    when instruction(15 downto 13) = "100" else
-          I_SUB     when instruction(15 downto 13) = "101" else
-          I_BNE    when instruction(15 downto 13) = "110" else
-          I_STORE    when instruction(15 downto 13) = "111";
+    decoder: process(clk)
+    begin
+        case(inst_reg(15 downto 13)) is
+            when "000"=>
+                decoded_instruction <= I_HALT;
+            when "001"=>
+                decoded_instruction <= I_ADD;
+            when "010"=>
+                decoded_instruction <= I_BEQ;
+            when "011"=>
+                decoded_instruction <= I_LOAD;
+            when "100"=>
+                decoded_instruction <= I_JUMP;
+            when "101"=>
+                decoded_instruction <= I_SUB;
+            when "110"=>
+                decoded_instruction <= I_BNE;
+            when "111"=>
+                decoded_instruction <= I_STORE;
+            when others =>
+                decoded_instruction <= I_NOP;
+        end case;
+        addr_c <= inst_reg(12 downto 11);
+        addr_a <= inst_reg(11 downto 10);
+        addr_b <= inst_reg(9 downto 8);
+    end process;
 
+    --Reg data
+    data_register:process(clk)
+    begin
+        if(clk = '1' and clk'event) then
+            reg_data <= instruction;
+        end if;
+    end process;
+    
+    --Mux is Load
+    mux_load:process(clk)
+    begin
+        if(is_load = '1') then
+            data <= reg_data;
+        else
+            data <= alu_res;
+        end if;
+    end process;
+    
+    --Carga do banco de registradores
+    load_registers:process(clk)
+    begin
+        if(clk = '1' and clk'event) then
+            if(reg_write = '1') then
+                case(addr_c) is
+                    when "00" =>
+                        r0 <= data;
+                    when "01" =>
+                        r1 <= data; 
+                    when "10" => 
+                        r2 <= data;
+                    when others =>
+                        r3 <= data;
+                end case;
+            end if;
+        end if;
+    end process;
+    
+    --Seleciona o registrador a passar dados para a ula pelo caminho reg_a
+    set_reg_a:process(clk)
+    begin
+        if(clk = '1' and clk'event) then
+            case(addr_a) is
+                when "00" => 
+                    reg_a <= r0;
+                when "01" => 
+                    reg_a <= r1;
+                when "10" => 
+                    reg_a <= r2;
+                when others => 
+                    reg_a <= r3;
+            end case;
+        end if;
+    end process;
+    
+    --Seleciona o registrador a passar dados para a ula pelo caminho reg_b
+    set_reg_b:process(clk)
+    begin
+        if(clk = '1' and clk'event) then
+            case(addr_b) is
+                when "00" => 
+                    reg_b <= r0;
+                when "01" => 
+                    reg_b <= r1;
+                when "10" => 
+                    reg_b <= r2;
+                when others => 
+                    reg_b <= r3;
+            end case;
+        end if;
+    end process;
+    
+    --SSa韉a Reg_b para mem髍ia
+    reg_b_process:process(clk)
+    begin
+        if(clk = '1' and clk'event) then
+            reg_b_out <= reg_b;
+        end if;
+    end process;
+  
+    --Controle da ULA
+    process(clk)
+    begin
+    if(clk = '1' and clk'event) then
+        if (alu_op = '1') then
+          alu_res <=  reg_a + reg_b;  --ADD
+        else
+          alu_res <=  reg_a - reg_b;  --SUB
+        end if;
+        if (alu_res = x"00") then
+          zero_flag <= '1';
+        else
+          zero_flag <= '0';
+        end if;
+    end if;
+    end process;
 end rtl;

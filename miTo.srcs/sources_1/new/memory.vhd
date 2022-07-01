@@ -17,7 +17,7 @@ entity memory is
         mem_write           : in  std_logic;
 		mem_read			: in  std_logic;
         rst_n               : in  std_logic;        
-        data		        : in  std_logic_vector(15 downto 0);
+        reg_b_out	        : in  std_logic_vector(15 downto 0);
         ram_addr		    : in  std_logic_vector(7  downto 0);
         instruction         : out std_logic_vector(15 downto 0)
     );
@@ -38,22 +38,22 @@ begin
 			
 	if(rst_n = '1') then
 			--  reset memory when rst_n = 1 
-			mem(0)    <= "0110000000000100"; 
-			mem(1)    <= "0110100000000100";
-			mem(2)    <= "0011000010000000";
+			mem(0)    <= "0010001100000000"; --ADD
+			mem(1)    <= "1010110110000000"; --SUB
+			mem(2)    <= "0111000000000111"; --LOAD
 			mem(3)    <= "0000000000000000";
-			mem(4)    <= "0000000000000010";
-			mem(5)    <= "0000000000000101"; 
-			mem(6)    <= "0000000000000110";
-			mem(7)    <= "0000000000000111";
-			mem(8)    <= "0000000000001000";
-			mem(9)    <= "0000000000001001";
-			mem(10)   <= "0000000000001010";
-			mem(11)   <= "0000000000001011";
-			mem(12)   <= "0000000000001100";
-			mem(13)   <= "0000000000001101";
-			mem(14)   <= "0000000000001110";
-			mem(15)   <= "0000000000001111"; 
+			mem(4)    <= "0000000000000011";
+			mem(5)    <= "0000000000000000";
+			mem(6)    <= "0000000000000000";
+			mem(7)    <= "0000000000000000";
+			mem(8)    <= "0000000000000000";
+			mem(9)    <= "0000000000000000";
+			mem(10)   <= "0000000000000000";
+			mem(11)   <= "0000000000000000";
+			mem(12)   <= "0000000000000000";
+			mem(13)   <= "0000000000000000";
+			mem(14)   <= "0000000000000000";
+			mem(15)   <= "0000000000000000"; 
 			mem(16)   <= "0000000000000000"; 
 			mem(17)   <= "0000000000000000"; 
 			mem(18)   <= "0000000000000000"; 
@@ -295,14 +295,12 @@ begin
 			mem(254)  <= "0000000000000000";
 			mem(255)  <= "0000000000000000";
 	else
-	    -- read from memory
-		if(mem_read = '1') then 
-		    instruction(15 downto 0) <= mem(to_integer(unsigned(ram_addr)));
-		-- write in memory		
-		elsif (mem_write = '1') then 		
-			mem(to_integer(unsigned(ram_addr))) <= data(15 downto 0);
-		end if;
-	end if;		
+        if(mem_read = '1') then
+            instruction(15 downto 0) <= mem(to_integer(unsigned(ram_addr)));
+        elsif (mem_write = '1') then
+            mem(to_integer(unsigned(ram_addr))) <= reg_b_out(15 downto 0);
+        end if;
+	end if;
 end process;
 
 end rtl;

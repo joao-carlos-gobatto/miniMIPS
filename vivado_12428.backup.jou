@@ -1,0 +1,68 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Thu Jun 16 17:32:36 2022
+# Process ID: 12428
+# Current directory: D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent4740 D:\Estudos\UERGS\2022.1\Organização de Computadores\miniMIPS\miTo.xpr
+# Log file: D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/vivado.log
+# Journal file: D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project {D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.xpr}
+launch_simulation
+source testebench.tcl
+update_compile_order -fileset sources_1
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
+launch_simulation
+source testebench.tcl
+close_sim
