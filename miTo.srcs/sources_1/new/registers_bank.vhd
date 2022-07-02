@@ -43,7 +43,7 @@ begin
     begin
         if(clk = '1' and clk'event) then
             if(reg_write = '1') then
-                case(addr_c) is
+                case(addr_dest) is
                     when "00" =>
                         r0_s <= data;
                     when "01" =>
