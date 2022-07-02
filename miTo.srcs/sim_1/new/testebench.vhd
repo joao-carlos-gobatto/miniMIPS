@@ -53,7 +53,9 @@ begin
   reset_s	<= '1' after 2 ns,
       '0' after 8 ns;
 
-  s0_s <= "0000000000000001" after 10 ns;
+  s0_s <= "0000000000000001" after 10 ns,
+       "0000000000000010" after 20 ns,
+       "0000000000000100" after 30 ns;
   s1_s <= "0000000000000001" after 10 ns;
   alu_op_s <= '0' after 10 ns;
 

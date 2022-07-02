@@ -22,32 +22,17 @@ entity miTo is
 end miTo;
 
 architecture rtl of miTo is
-  signal clk_s : std_logic;
-  signal rst_n_s : std_logic;
-  signal ula_op_s : std_logic; 
-  signal zero_flag_s : std_logic;
-  signal s0_s : std_logic_vector(15 downto 0);
-  signal s1_s : std_logic_vector(15 downto 0);
-  signal ula_out_s : std_logic_vector(15 downto 0);
 begin
 
 ula_i : ula
   Port map (
-    clk                        => clk_s,
-    rst_n                      => rst_n_s,
-    ula_op                     => ula_op_s,
-    s0                         => s0_s,
-    s1                         => s1_s,
-    ula_out                    => ula_out_s,
-    zero_flag                  => zero_flag_s
+    clk                        => clk,
+    rst_n                      => rst_n,
+    ula_op                     => ula_op,
+    s0                         => s0,
+    s1                         => s1,
+    ula_out                    => ula_out,
+    zero_flag                  => zero_flag
   );
-
-  clk_s                       <= clk;
-  rst_n_s                     <= rst_n; 
-  ula_op_s                    <= ula_op;
-  s0_s                        <= s0;
-  s1_s                        <= s1;
-  ula_out                     <= ula_out_s;
-  zero_flag                   <= zero_flag_s;
  
 end rtl;

@@ -27,20 +27,22 @@ architecture rtl of ula is
   signal ula_out_s  : std_logic_vector(15 downto 0);
   
 begin  
-    process(clk)
+    ula_out <= ula_out_s;
+    process(s0,s1,ula_op)
     begin
-        if(clk = '1' and clk'event) then
-            if (ula_op = '1') then
-                ula_out_s <=  s0 + s1;
-            else
-                ula_out_s <=  s0 - s1;
-            end if;
-            if (ula_out_s = x"00") then
-                zero_flag <= '1';
-            else
-                zero_flag <= '0';
-            end if;
-            ula_out <= ula_out_s;
+        if (ula_op = '1') then
+            ula_out_s <=  s0 + s1;
+        else
+            ula_out_s <=  s0 - s1;
+        end if;
+    end process;
+    
+    process(ula_out_s)
+    begin
+        if (ula_out_s = x"00") then
+            zero_flag <= '1';
+        else
+            zero_flag <= '0';
         end if;
     end process;
 end rtl;
