@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: UERGS
--- Engineer: Newton Jr
+-- Engineer: Débora Silva Garcia e João Carlos Gobatto da Cunha
 ----------------------------------------------------------------------------------
 
 
@@ -9,57 +9,41 @@ use IEEE.STD_LOGIC_1164.ALL;
 library mito;
 use mito.mito_pkg.all;
 
-
 entity testebench is
-
 end testebench;
 
 architecture Behavioral of testebench is
-
   component miTo is
     Port (
-      signal clk                    : in  std_logic :='0';
-      signal rst_n                  : in  std_logic :='0';
-      signal instruction            : out std_logic_vector (15 downto 0);
-      signal decoded_instruction    : out decoded_instruction_type;
-      signal alu_op                 : out std_logic;
-      signal state_flag             : out estados;
-      signal ram_addr               : out std_logic_vector (7 downto 0);
-      signal mem_write              : out std_logic;
-      signal reg_write              : out std_logic;
-      signal branch                 : out std_logic;
-      signal halt                   : out std_logic         
+      clk                		: in  std_logic;
+      rst_n              		: in  std_logic;
+      alu_op             		: in  std_logic;
+      s0						        : in std_logic_vector(15 downto 0);
+      s1						        : in std_logic_vector(15 downto 0);
+      ula_out					      : out std_logic_vector(15 downto 0);
+      zero_flag          		: out std_logic        
     ); 
   end component;   
     
   --control signals
   signal clk_s                      : std_logic :='0';
   signal reset_s                    : std_logic;
-  signal state_flag_s               : estados;
   signal alu_op_s                   : std_logic;
-  signal decoded_instruction_s      : decoded_instruction_type; 
-  signal instruction_s              : std_logic_vector (15 downto 0);
-  signal ram_addr_s                 : std_logic_vector (7 downto 0);
-  signal mem_write_s                : std_logic;
-  signal reg_write_s                : std_logic;
-  signal branch_s                   : std_logic;
-  signal halt_s                     : std_logic;
+  signal zero_flag_s                : std_logic;
+  signal alu_out_s                  : std_logic_vector(15 downto 0);
+  signal s0_s                       : std_logic_vector(15 downto 0);
+  signal s1_s                       : std_logic_vector(15 downto 0);
         
 begin
-
   miTo_i : miTo
   port map(
     clk                      => clk_s,
     rst_n                    => reset_s,   
-    decoded_instruction      => decoded_instruction_s,
     alu_op                   => alu_op_s,
-    state_flag               => state_flag_s,
-    instruction              => instruction_s,
-    ram_addr                 => ram_addr_s,
-    mem_write                => mem_write_s,
-    reg_write                => reg_write_s,
-    branch                   => branch_s,
-    halt                     => halt_s
+		s0						           => s0_s,
+		s1						           => s1_s,
+		ula_out					         => ula_out_s,
+		zero_flag          		   => zero_flag_s
   );
 
    --clock generator - 100MHZ
@@ -68,5 +52,9 @@ begin
    --reset signal
   reset_s	<= '1' after 2 ns,
       '0' after 8 ns;
+
+  s0_s <= '0000000000000001' after 10 ns;
+  s1_s <= '0000000000000010' after 10 ns;
+  alu_op <= '1' after 10 ns;
 
 end Behavioral;
