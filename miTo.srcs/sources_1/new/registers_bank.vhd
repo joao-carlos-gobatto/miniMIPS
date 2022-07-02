@@ -14,6 +14,7 @@ entity registers_bank is
   Port(
     clk             : in std_logic;
     rst_n           : in std_logic;
+    reg_write       : in std_logic;
     data            : in std_logic_vector(15 downto 0);
     addr_dest       : in std_logic_vector(1 downto 0);
     addr_a          : in std_logic_vector(1 downto 0);

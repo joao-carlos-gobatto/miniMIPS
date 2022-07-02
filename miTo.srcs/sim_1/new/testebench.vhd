@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: UERGS
--- Engineer: Newton Jr
+-- Engineer: Débora Silva Garcia e João Carlos Gobatto da Cunha
 ----------------------------------------------------------------------------------
 
 
@@ -18,55 +18,63 @@ architecture Behavioral of testebench is
 
   component miTo is
     Port (
-      signal clk                    : in  std_logic :='0';
-      signal rst_n                  : in  std_logic :='0';
-      signal instruction            : out std_logic_vector (15 downto 0);
-      signal decoded_instruction    : out decoded_instruction_type;
-      signal alu_op                 : out std_logic;
-      signal state_flag             : out estados;
-      signal ram_addr               : out std_logic_vector (7 downto 0);
-      signal mem_write              : out std_logic;
-      signal reg_write              : out std_logic;
-      signal branch                 : out std_logic;
-      signal halt                   : out std_logic         
+      clk             : out std_logic := '0';
+    	rst_n           : out std_logic := '0';
+		  reg_write   		: out std_logic;
+    	data            : out std_logic_vector(15 downto 0);
+    	addr_dest       : out std_logic_vector(1 downto 0);
+    	addr_a          : out std_logic_vector(1 downto 0);
+    	addr_b          : out std_logic_vector(1 downto 0);
+    	data_to_mem     : in std_logic_vector(15 downto 0);
+    	s0              : in std_logic_vector(15 downto 0);
+    	s1              : in std_logic_vector(15 downto 0);
+    	r0              : in std_logic_vector(15 downto 0);
+    	r1              : in std_logic_vector(15 downto 0);
+    	r2              : in std_logic_vector(15 downto 0);
+    	r3              : in std_logic_vector(15 downto 0)         
     ); 
   end component;   
     
   --control signals
-  signal clk_s                      : std_logic :='0';
-  signal reset_s                    : std_logic;
-  signal state_flag_s               : estados;
-  signal alu_op_s                   : std_logic;
-  signal decoded_instruction_s      : decoded_instruction_type; 
-  signal instruction_s              : std_logic_vector (15 downto 0);
-  signal ram_addr_s                 : std_logic_vector (7 downto 0);
-  signal mem_write_s                : std_logic;
-  signal reg_write_s                : std_logic;
-  signal branch_s                   : std_logic;
-  signal halt_s                     : std_logic;
+  signal clk_s                : std_logic :='0';
+  signal rst_n_s              : std_logic := '0';
+  signal reg_write            : std_logic := '0';
+  signal data_s               : std_logic_vector(15 downto 0);
+  signal addr_dest_s          : std_logic_vector(1 downto 0);
+  signal addr_a_s             : std_logic_vector(1 downto 0);
+  signal addr_b_s             : std_logic_vector(1 downto 0);
         
 begin
 
   miTo_i : miTo
   port map(
-    clk                      => clk_s,
-    rst_n                    => reset_s,   
-    decoded_instruction      => decoded_instruction_s,
-    alu_op                   => alu_op_s,
-    state_flag               => state_flag_s,
-    instruction              => instruction_s,
-    ram_addr                 => ram_addr_s,
-    mem_write                => mem_write_s,
-    reg_write                => reg_write_s,
-    branch                   => branch_s,
-    halt                     => halt_s
+    clk             => clk_s,
+    rst_n           => rst_n_s,
+    reg_write       => reg_write_s,
+    data            => data_s,
+    addr_dest       => addr_dest_s,
+    addr_a          => addr_a_s,
+    addr_b          => addr_b_s,
+    data_to_mem     => data_to_mem_s,
+    s0              => s0_s,
+    s1              => s1_s,
+    r0              => r0_s,
+    r1              => r1_s,
+    r2              => r2_s,
+    r3              => r3_s
   );
 
    --clock generator - 100MHZ
   clk_s 	<= not clk_s after 5 ns;
 
    --reset signal
-  reset_s	<= '1' after 2 ns,
+  rst_n_s	<= '1' after 2 ns,
       '0' after 8 ns;
+
+  reg_write	<= '0' after 10 ns,
+  data_s    <= "0000000000000000" after 15 ns,
+  addr_dest_s <= "00" after 15 ns,
+  addr_a_s <= "00" after 15 ns,
+  addr_b_s <= "00" after 15 ns,
 
 end Behavioral;
