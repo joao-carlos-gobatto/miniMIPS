@@ -1,0 +1,54 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Sat Jul  2 16:31:31 2022
+# Process ID: 14596
+# Current directory: D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent16304 D:\Estudos\UERGS\2022.1\Organização de Computadores\miniMIPS\miTo.xpr
+# Log file: D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/vivado.log
+# Journal file: D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project {D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.xpr}
+WARNING: [filemgmt 56-3] IPUserFilesDir: Could not find the directory 'D:/Estudos/UERGS/2022.1/Organizao de Computadores/miniMIPS/miTo.ip_user_files'.
+CRITICAL WARNING: [Project 1-19] Could not find the file 'D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/control_unit.vhd'.
+CRITICAL WARNING: [Project 1-19] Could not find the file 'D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/data_path.vhd'.
+CRITICAL WARNING: [Project 1-19] Could not find the file 'D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/memory.vhd'.
+CRITICAL WARNING: [Project 1-19] Could not find the file 'D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/testebench_behav.wcfg'.
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2020.2/data/ip'.
+update_compile_order -fileset sources_1
+add_files -norecurse {{D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/ula.vhd}}
+update_compile_order -fileset sources_1
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'testebench' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.sim/sim_1/behav/xsim'
+"xvhdl --incr --relax -prj testebench_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/mito_pkg.vhd" into library mito
+INFO: [VRFC 10-163] Analyzing VHDL file "D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/miTo.vhd" into library mito
+INFO: [VRFC 10-3107] analyzing entity 'miTo'
+ERROR: [VRFC 10-2989] 'alu' is not declared [D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/miTo.vhd:34]
+ERROR: [VRFC 10-3208] cannot update 'in' object 'alu_op' [D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/miTo.vhd:45]
+ERROR: [VRFC 10-3208] cannot update 'in' object 's0' [D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/miTo.vhd:46]
+ERROR: [VRFC 10-3208] cannot update 'in' object 's1' [D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/miTo.vhd:47]
+ERROR: [VRFC 10-2989] 'ula_out_s' is not declared [D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/miTo.vhd:48]
+ERROR: [VRFC 10-3782] unit 'rtl' ignored due to previous errors [D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/miTo.vhd:24]
+INFO: [VRFC 10-3070] VHDL file 'D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.srcs/sources_1/new/miTo.vhd' ignored due to errors
+INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
+INFO: [USF-XSim-99] Step results log file:'D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.sim/sim_1/behav/xsim/xvhdl.log'
+ERROR: [USF-XSim-62] 'compile' step failed with error(s). Please check the Tcl console output or 'D:/Estudos/UERGS/2022.1/Organização de Computadores/miniMIPS/miTo.sim/sim_1/behav/xsim/xvhdl.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+update_compile_order -fileset sources_1
+exit
+INFO: [Common 17-206] Exiting Vivado at Sat Jul  2 16:38:12 2022...

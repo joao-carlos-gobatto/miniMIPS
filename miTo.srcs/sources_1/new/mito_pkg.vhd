@@ -13,7 +13,7 @@ package mito_pkg is
 	Port (
 		clk                		: in  std_logic;
 		rst_n              		: in  std_logic;
-		alu_op             		: in  std_logic;
+		ula_op             		: in  std_logic;
 		s0						: in std_logic_vector(15 downto 0);
 		s1						: in std_logic_vector(15 downto 0);
 		ula_out					: out std_logic_vector(15 downto 0);
@@ -25,7 +25,7 @@ package mito_pkg is
 	Port (
 		clk                		: in  std_logic;
 		rst_n              		: in  std_logic;
-		alu_op             		: in  std_logic;
+		ula_op             		: in  std_logic;
 		s0						: in std_logic_vector(15 downto 0);
 		s1						: in std_logic_vector(15 downto 0);
 		ula_out					: out std_logic_vector(15 downto 0);
@@ -37,7 +37,7 @@ package mito_pkg is
 	Port (
 		clk                		: out  std_logic;
 		rst_n              		: out  std_logic;
-		alu_op             		: out  std_logic;
+		ula_op             		: out  std_logic;
 		s0						: out std_logic_vector(15 downto 0);
 		s1						: out std_logic_vector(15 downto 0);
 		ula_out					: in std_logic_vector(15 downto 0);

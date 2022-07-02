@@ -14,7 +14,7 @@ entity ula is
   Port(
     clk                   : in std_logic;
     rst_n                 : in std_logic;
-    alu_op                : in std_logic;
+    ula_op                : in std_logic;
     s0                    : in  std_logic_vector(15 downto 0);
     s1                    : in  std_logic_vector(15 downto 0);
     zero_flag             : out std_logic;
@@ -24,23 +24,23 @@ entity ula is
 end ula;
 
 architecture rtl of ula is
-  signal alu_out_s  : std_logic_vector(15 downto 0);
+  signal ula_out_s  : std_logic_vector(15 downto 0);
   
 begin  
     process(clk)
     begin
         if(clk = '1' and clk'event) then
-            if (alu_op = '1') then
-            alu_out_s <=  s0 + s1;
+            if (ula_op = '1') then
+                ula_out_s <=  s0 + s1;
             else
-            alu_out_s <=  s0 - s1;
+                ula_out_s <=  s0 - s1;
             end if;
-            if (alu_res = x"00") then
-            zero_flag <= '1';
+            if (ula_out_s = x"00") then
+                zero_flag <= '1';
             else
-            zero_flag <= '0';
+                zero_flag <= '0';
             end if;
-            alu_out <= alu_out_s;
+            ula_out <= ula_out_s;
         end if;
     end process;
 end rtl;

@@ -17,7 +17,7 @@ architecture Behavioral of testebench is
     Port (
       clk                		: in  std_logic;
       rst_n              		: in  std_logic;
-      alu_op             		: in  std_logic;
+      ula_op             		: in  std_logic;
       s0						        : in std_logic_vector(15 downto 0);
       s1						        : in std_logic_vector(15 downto 0);
       ula_out					      : out std_logic_vector(15 downto 0);
@@ -29,17 +29,17 @@ architecture Behavioral of testebench is
   signal clk_s                      : std_logic :='0';
   signal reset_s                    : std_logic;
   signal alu_op_s                   : std_logic;
-  signal zero_flag_s                : std_logic;
-  signal alu_out_s                  : std_logic_vector(15 downto 0);
   signal s0_s                       : std_logic_vector(15 downto 0);
   signal s1_s                       : std_logic_vector(15 downto 0);
+  signal ula_out_s                  : std_logic_vector(15 downto 0);
+  signal zero_flag_s                : std_logic;
         
 begin
   miTo_i : miTo
   port map(
     clk                      => clk_s,
     rst_n                    => reset_s,   
-    alu_op                   => alu_op_s,
+    ula_op                   => alu_op_s,
 		s0						           => s0_s,
 		s1						           => s1_s,
 		ula_out					         => ula_out_s,
@@ -53,8 +53,8 @@ begin
   reset_s	<= '1' after 2 ns,
       '0' after 8 ns;
 
-  s0_s <= '0000000000000001' after 10 ns;
-  s1_s <= '0000000000000010' after 10 ns;
-  alu_op <= '1' after 10 ns;
+  s0_s <= "0000000000000001" after 10 ns;
+  s1_s <= "0000000000000001" after 10 ns;
+  alu_op_s <= '0' after 10 ns;
 
 end Behavioral;
