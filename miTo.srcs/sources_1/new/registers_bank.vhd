@@ -39,6 +39,10 @@ architecture rtl of registers_bank is
   
 begin        
     --Carga do banco de registradores
+    r0 <= r0_s;
+    r1 <= r1_s;
+    r2 <= r2_s;
+    r3 <= r3_s;
     process(clk)
     begin
         if(clk = '1' and clk'event) then
