@@ -83,5 +83,4 @@ begin
   addr_dest_s <= "00" after 15 ns,
   addr_a_s <= "00" after 15 ns,
   addr_b_s <= "00" after 15 ns,
-end process;
 end Behavioral;
