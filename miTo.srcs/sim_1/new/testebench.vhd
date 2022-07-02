@@ -18,20 +18,20 @@ architecture Behavioral of testebench is
 
   component miTo is
     Port (
-      clk             : out std_logic := '0';
-    	rst_n           : out std_logic := '0';
-		  reg_write   		: out std_logic;
-    	data            : out std_logic_vector(15 downto 0);
-    	addr_dest       : out std_logic_vector(1 downto 0);
-    	addr_a          : out std_logic_vector(1 downto 0);
-    	addr_b          : out std_logic_vector(1 downto 0);
-    	data_to_mem     : in std_logic_vector(15 downto 0);
-    	s0              : in std_logic_vector(15 downto 0);
-    	s1              : in std_logic_vector(15 downto 0);
-    	r0              : in std_logic_vector(15 downto 0);
-    	r1              : in std_logic_vector(15 downto 0);
-    	r2              : in std_logic_vector(15 downto 0);
-    	r3              : in std_logic_vector(15 downto 0)         
+      clk             : in std_logic;
+    	rst_n           : in std_logic;
+		  reg_write		    : in std_logic;
+    	data            : in std_logic_vector(15 downto 0);
+    	addr_dest       : in std_logic_vector(1 downto 0);
+    	addr_a          : in std_logic_vector(1 downto 0);
+    	addr_b          : in std_logic_vector(1 downto 0);
+    	data_to_mem     : out std_logic_vector(15 downto 0);
+    	s0              : out std_logic_vector(15 downto 0);
+    	s1              : out std_logic_vector(15 downto 0);
+    	r0              : out std_logic_vector(15 downto 0);
+    	r1              : out std_logic_vector(15 downto 0);
+    	r2              : out std_logic_vector(15 downto 0);
+    	r3              : out std_logic_vector(15 downto 0)         
     ); 
   end component;   
     
@@ -78,9 +78,9 @@ begin
   rst_n_s	<= '1' after 2 ns,
       '0' after 8 ns;
 
-  reg_write_s	<= '0' after 10 ns,
-  data_s    <= "0000000000000000" after 15 ns,
-  addr_dest_s <= "00" after 15 ns,
-  addr_a_s <= "00" after 15 ns,
-  addr_b_s <= "00" after 15 ns,
+  reg_write_s	<= '0' after 10 ns;
+  data_s    <= "0000000000000000" after 15 ns;
+  addr_dest_s <= "00" after 15 ns;
+  addr_a_s <= "00" after 15 ns;
+  addr_b_s <= "00" after 15 ns;
 end Behavioral;
