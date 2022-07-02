@@ -38,18 +38,18 @@ architecture Behavioral of testebench is
   --control signals
   signal clk_s                : std_logic :='0';
   signal rst_n_s              : std_logic := '0';
-  signal reg_write            : std_logic := '0';
+  signal reg_write_s          : std_logic := '0';
   signal data_s               : std_logic_vector(15 downto 0);
   signal addr_dest_s          : std_logic_vector(1 downto 0);
   signal addr_a_s             : std_logic_vector(1 downto 0);
   signal addr_b_s             : std_logic_vector(1 downto 0);
-  data_to_mem_s               : std_logic_vector(15 downto 0);
-  s0_s                        : std_logic_vector(15 downto 0);
-  s1_s                        : std_logic_vector(15 downto 0);
-  r0_s                        : std_logic_vector(15 downto 0);
-  r1_s                        : std_logic_vector(15 downto 0);
-  r2_s                        : std_logic_vector(15 downto 0);
-  r3_s                        : std_logic_vector(15 downto 0);       
+  signal data_to_mem_s        : std_logic_vector(15 downto 0);
+  signal s0_s                 : std_logic_vector(15 downto 0);
+  signal s1_s                 : std_logic_vector(15 downto 0);
+  signal r0_s                 : std_logic_vector(15 downto 0);
+  signal r1_s                 : std_logic_vector(15 downto 0);
+  signal r2_s                 : std_logic_vector(15 downto 0);
+  signal r3_s                 : std_logic_vector(15 downto 0);       
 
 begin
 
@@ -78,17 +78,10 @@ begin
   rst_n_s	<= '1' after 2 ns,
       '0' after 8 ns;
 
-  reg_write	<= '0' after 10 ns,
+  reg_write_s	<= '0' after 10 ns,
   data_s    <= "0000000000000000" after 15 ns,
   addr_dest_s <= "00" after 15 ns,
   addr_a_s <= "00" after 15 ns,
   addr_b_s <= "00" after 15 ns,
-  data_to_mem_s <= data_to_mem_s,
-  s0_s  <= s0_s,
-  s1_s  <= s1_s,
-  r0_s  <= r0_s,
-  r1_s  <= r1_s,
-  r2_s  <= r2_s,
-  r3_s  <= r3_s,
-
+end process;
 end Behavioral;
