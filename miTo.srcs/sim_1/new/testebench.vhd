@@ -20,7 +20,7 @@ architecture Behavioral of testebench is
     Port (
       clk             : in std_logic;
     	rst_n           : in std_logic;
-		  reg_write		    : in std_logic;
+		reg_write		: in std_logic;
     	data            : in std_logic_vector(15 downto 0);
     	addr_dest       : in std_logic_vector(1 downto 0);
     	addr_a          : in std_logic_vector(1 downto 0);
@@ -78,9 +78,21 @@ begin
   rst_n_s	<= '1' after 2 ns,
       '0' after 8 ns;
 
-  reg_write_s	<= '0' after 10 ns;
-  data_s    <= "0000000000000000" after 15 ns;
-  addr_dest_s <= "00" after 15 ns;
-  addr_a_s <= "00" after 15 ns;
-  addr_b_s <= "00" after 15 ns;
+  reg_write_s	<= not reg_write_s after 10 ns;
+  data_s    <= "0011000010000000" after 10 ns,
+  "1000011000000001" after 30 ns,
+  "0001000010000010" after 50 ns,
+  "0010000001000011" after 70 ns;
+  addr_dest_s <= "00" after 10 ns,
+  "01" after 20 ns,
+  "10" after 40 ns,
+  "11" after 60 ns;
+  addr_a_s <= "00" after 15 ns,
+  "01" after 25ns,
+  "10" after 55ns,
+  "11" after 65ns;
+  addr_b_s <= "10" after 15 ns,
+  "11" after 25ns,
+  "00" after 55ns,
+  "01" after 65ns;
 end Behavioral;

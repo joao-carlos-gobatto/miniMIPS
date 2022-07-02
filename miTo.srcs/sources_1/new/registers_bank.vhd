@@ -32,13 +32,12 @@ end registers_bank;
 
 architecture rtl of registers_bank is
   --Registradores e entradas do banco de registradores
-  signal r0_s   : std_logic_vector(15 downto 0);
-  signal r1_s   : std_logic_vector(15 downto 0);
-  signal r2_s   : std_logic_vector(15 downto 0);
-  signal r3_s   : std_logic_vector(15 downto 0); 
+  signal r0_s   : std_logic_vector(15 downto 0) := "0000000000000000";
+  signal r1_s   : std_logic_vector(15 downto 0) := "0000000000000000";
+  signal r2_s   : std_logic_vector(15 downto 0) := "0000000000000000";
+  signal r3_s   : std_logic_vector(15 downto 0) := "0000000000000000"; 
   
 begin        
-    --Carga do banco de registradores
     r0 <= r0_s;
     r1 <= r1_s;
     r2 <= r2_s;
@@ -58,7 +57,7 @@ begin
                         r3_s <= data;
                 end case;
             end if;
-
+    
             case(addr_a) is
                 when "00" => 
                     s0 <= r0_s;
@@ -69,7 +68,7 @@ begin
                 when others => 
                     s0 <= r3_s;
             end case;
-
+    
             case(addr_b) is
                 when "00" => 
                     s1 <= r0_s;
