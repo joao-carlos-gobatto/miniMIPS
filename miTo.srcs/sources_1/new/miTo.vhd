@@ -14,6 +14,7 @@ entity miTo is
     clk             : in std_logic;
     rst_n           : in std_logic;
     
+    is_load         : in std_logic;
     reg_write       : in std_logic;
     data            : in std_logic_vector(15 downto 0);
     addr_dest       : in std_logic_vector(1 downto 0);
@@ -34,19 +35,33 @@ entity miTo is
 end miTo;
 
 architecture rtl of miTo is
+signal mux_registers_bank : std_logic_vector(15 downto 0);
 signal s0_s : std_logic_vector(15 downto 0) := "0000000000000000";
 signal s1_s : std_logic_vector(15 downto 0) := "0000000000000000";
+signal ula_out_s : std_logic_vector(15 downto 0) := "0000000000000000";
+
 
 begin
 
 s0 <= s0_s;
 s1 <= s1_s;
+ula_out <= ula_out_s;
+
+--MUX de entrada do banco de registradores
+process(clk)
+begin
+    if(is_load='1') then
+        mux_registers_bank <= data;
+    else
+        mux_registers_bank <= ula_out_s;
+    end if;
+end process;
 
 registers_bank_i : registers_bank
   Port map (
     clk             => clk,
     reg_write       => reg_write,
-    data            => data,
+    data            => mux_registers_bank,
     addr_dest       => addr_dest,
     addr_a          => addr_a,
     addr_b          => addr_b,
@@ -64,7 +79,7 @@ ula_i : ula
     ula_op                     => ula_op,
     s0                         => s0_s,
     s1                         => s1_s,
-    ula_out                    => ula_out,
+    ula_out                    => ula_out_s,
     zero_flag                  => zero_flag
   );
  
