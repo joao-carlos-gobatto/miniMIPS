@@ -9,18 +9,16 @@ use IEEE.STD_LOGIC_1164.ALL;
 library mito;
 use mito.mito_pkg.all;
 
-
 entity testebench is
-
 end testebench;
 
 architecture Behavioral of testebench is
-
   component miTo is
     Port (
       clk             : in std_logic;
     	rst_n           : in std_logic;
-		reg_write		: in std_logic;
+      
+		  reg_write		    : in std_logic;
     	data            : in std_logic_vector(15 downto 0);
     	addr_dest       : in std_logic_vector(1 downto 0);
     	addr_a          : in std_logic_vector(1 downto 0);
@@ -31,13 +29,20 @@ architecture Behavioral of testebench is
     	r0              : out std_logic_vector(15 downto 0);
     	r1              : out std_logic_vector(15 downto 0);
     	r2              : out std_logic_vector(15 downto 0);
-    	r3              : out std_logic_vector(15 downto 0)         
+    	r3              : out std_logic_vector(15 downto 0);         
+
+      ula_op          : in  std_logic;
+      s0						  : in std_logic_vector(15 downto 0);
+      s1						  : in std_logic_vector(15 downto 0);
+      ula_out					: out std_logic_vector(15 downto 0);
+      zero_flag       : out std_logic        
     ); 
   end component;   
     
   --control signals
   signal clk_s                : std_logic :='0';
   signal rst_n_s              : std_logic := '0';
+
   signal reg_write_s          : std_logic := '0';
   signal data_s               : std_logic_vector(15 downto 0);
   signal addr_dest_s          : std_logic_vector(1 downto 0);
@@ -51,8 +56,13 @@ architecture Behavioral of testebench is
   signal r2_s                 : std_logic_vector(15 downto 0);
   signal r3_s                 : std_logic_vector(15 downto 0);       
 
+  signal alu_op_s                   : std_logic;
+  signal s0_s                       : std_logic_vector(15 downto 0);
+  signal s1_s                       : std_logic_vector(15 downto 0);
+  signal ula_out_s                  : std_logic_vector(15 downto 0);
+  signal zero_flag_s                : std_logic;
+        
 begin
-
   miTo_i : miTo
   port map(
     clk             => clk_s,
@@ -68,7 +78,14 @@ begin
     r0              => r0_s,
     r1              => r1_s,
     r2              => r2_s,
-    r3              => r3_s
+    r3              => r3_s,
+    clk             => clk_s,
+    rst_n           => rst_n_s,   
+    ula_op          => alu_op_s,
+		s0						  => s0_s,
+		s1						  => s1_s,
+		ula_out					=> ula_out_s,
+		zero_flag       => zero_flag_s
   );
 
    --clock generator - 100MHZ
@@ -95,4 +112,10 @@ begin
   "11" after 25ns,
   "00" after 55ns,
   "01" after 65ns;
+  s0_s <= "0000000000000001" after 10 ns,
+       "0000000000000010" after 20 ns,
+       "0000000000000100" after 30 ns;
+  s1_s <= "0000000000000001" after 10 ns;
+  alu_op_s <= '0' after 10 ns;
+
 end Behavioral;
