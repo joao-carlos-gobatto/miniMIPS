@@ -26,6 +26,7 @@ package mito_pkg is
     	r2              : out std_logic_vector(15 downto 0);
     	r3              : out std_logic_vector(15 downto 0) 
 	);
+  end component;
   component ula
 	Port (
 		ula_op             		: in  std_logic;
@@ -55,8 +56,6 @@ package mito_pkg is
     	r3              : out std_logic_vector(15 downto 0);
 
 		ula_op          : in  std_logic;
-		s0				: in std_logic_vector(15 downto 0);
-		s1				: in std_logic_vector(15 downto 0);
 		ula_out			: out std_logic_vector(15 downto 0);
 		zero_flag       : out std_logic
 	);
@@ -81,8 +80,6 @@ package mito_pkg is
     	r3              : in std_logic_vector(15 downto 0);
 
 		ula_op          : out  std_logic;
-		s0				: out std_logic_vector(15 downto 0);
-		s1				: out std_logic_vector(15 downto 0);
 		ula_out			: in std_logic_vector(15 downto 0);
 		zero_flag       : in std_logic
 	); 

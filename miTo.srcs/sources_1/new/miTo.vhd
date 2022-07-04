@@ -25,18 +25,22 @@ entity miTo is
     r0              : out std_logic_vector(15 downto 0);
     r1              : out std_logic_vector(15 downto 0);
     r2              : out std_logic_vector(15 downto 0);
-    r3              : out std_logic_vector(15 downto 0)
+    r3              : out std_logic_vector(15 downto 0);
 
     ula_op          : in  std_logic;
-    s0              : in  std_logic_vector(15 downto 0);
-    s1              : in  std_logic_vector(15 downto 0);
     ula_out         : out  std_logic_vector(15 downto 0);
     zero_flag       : out  std_logic
   );
 end miTo;
 
 architecture rtl of miTo is
+signal s0_s : std_logic_vector(15 downto 0) := "0000000000000000";
+signal s1_s : std_logic_vector(15 downto 0) := "0000000000000000";
+
 begin
+
+s0 <= s0_s;
+s1 <= s1_s;
 
 registers_bank_i : registers_bank
   Port map (
@@ -47,18 +51,19 @@ registers_bank_i : registers_bank
     addr_a          => addr_a,
     addr_b          => addr_b,
     data_to_mem     => data_to_mem,
-    s0              => s0,
-    s1              => s1,
+    s0              => s0_s,
+    s1              => s1_s,
     r0              => r0,
     r1              => r1,
     r2              => r2,
     r3              => r3
-  )
+  );
+  
 ula_i : ula
   Port map (
     ula_op                     => ula_op,
-    s0                         => s0,
-    s1                         => s1,
+    s0                         => s0_s,
+    s1                         => s1_s,
     ula_out                    => ula_out,
     zero_flag                  => zero_flag
   );

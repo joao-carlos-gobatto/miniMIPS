@@ -32,8 +32,6 @@ architecture Behavioral of testebench is
     	r3              : out std_logic_vector(15 downto 0);         
 
       ula_op          : in  std_logic;
-      s0						  : in std_logic_vector(15 downto 0);
-      s1						  : in std_logic_vector(15 downto 0);
       ula_out					: out std_logic_vector(15 downto 0);
       zero_flag       : out std_logic        
     ); 
@@ -57,8 +55,6 @@ architecture Behavioral of testebench is
   signal r3_s                 : std_logic_vector(15 downto 0);       
 
   signal alu_op_s                   : std_logic;
-  signal s0_s                       : std_logic_vector(15 downto 0);
-  signal s1_s                       : std_logic_vector(15 downto 0);
   signal ula_out_s                  : std_logic_vector(15 downto 0);
   signal zero_flag_s                : std_logic;
         
@@ -79,13 +75,9 @@ begin
     r1              => r1_s,
     r2              => r2_s,
     r3              => r3_s,
-    clk             => clk_s,
-    rst_n           => rst_n_s,   
     ula_op          => alu_op_s,
-		s0						  => s0_s,
-		s1						  => s1_s,
-		ula_out					=> ula_out_s,
-		zero_flag       => zero_flag_s
+    ula_out			=> ula_out_s,
+	zero_flag       => zero_flag_s
   );
 
    --clock generator - 100MHZ
@@ -95,27 +87,25 @@ begin
   rst_n_s	<= '1' after 2 ns,
       '0' after 8 ns;
 
-  reg_write_s	<= not reg_write_s after 10 ns;
-  data_s    <= "0011000010000000" after 10 ns,
-  "1000011000000001" after 30 ns,
-  "0001000010000010" after 50 ns,
-  "0010000001000011" after 70 ns;
+  reg_write_s	<= '1' after 15 ns,   --LOAD REG 00
+                   '0' after 20 ns,
+                   '1' after 25 ns,   --LOAD REG 01
+                   '0' after 30 ns;
+--                   '1' after 35 ns,   --ADD REG 00 + REG 01
+--                   '0' after 40 ns;
+  
+  data_s    <= "0000000000000011" after 10 ns,
+  "0000000000000010" after 20 ns;
+--  "0000000000000011" after 35 ns;
+  
   addr_dest_s <= "00" after 10 ns,
   "01" after 20 ns,
-  "10" after 40 ns,
-  "11" after 60 ns;
-  addr_a_s <= "00" after 15 ns,
-  "01" after 25ns,
-  "10" after 55ns,
-  "11" after 65ns;
-  addr_b_s <= "10" after 15 ns,
-  "11" after 25ns,
-  "00" after 55ns,
-  "01" after 65ns;
-  s0_s <= "0000000000000001" after 10 ns,
-       "0000000000000010" after 20 ns,
-       "0000000000000100" after 30 ns;
-  s1_s <= "0000000000000001" after 10 ns;
-  alu_op_s <= '0' after 10 ns;
+  "10" after 30 ns;
+  
+  addr_a_s <= "00" after 30 ns;
+  
+  addr_b_s <= "01" after 30 ns;
+  
+  alu_op_s <= '1' after 35 ns;
 
 end Behavioral;
