@@ -18,55 +18,59 @@ architecture Behavioral of testebench is
 
   component miTo is
     Port (
-      signal clk                    : in  std_logic :='0';
-      signal rst_n                  : in  std_logic :='0';
-      signal instruction            : out std_logic_vector (15 downto 0);
-      signal decoded_instruction    : out decoded_instruction_type;
-      signal alu_op                 : out std_logic;
-      signal state_flag             : out estados;
-      signal ram_addr               : out std_logic_vector (7 downto 0);
-      signal mem_write              : out std_logic;
-      signal reg_write              : out std_logic;
-      signal branch                 : out std_logic;
-      signal halt                   : out std_logic         
+      clk             : in	std_logic;
+      rst_n           : in	std_logic;        
+      mem_write       : in	std_logic;
+      mem_read        : in	std_logic;
+      ram_addr        : in	std_logic_vector(7  downto 0);
+      data_to_mem     : in	std_logic_vector(15 downto 0);
+      instruction     : out	std_logic_vector(15 downto 0)
     ); 
   end component;   
     
   --control signals
-  signal clk_s                      : std_logic :='0';
-  signal reset_s                    : std_logic;
-  signal state_flag_s               : estados;
-  signal alu_op_s                   : std_logic;
-  signal decoded_instruction_s      : decoded_instruction_type; 
-  signal instruction_s              : std_logic_vector (15 downto 0);
-  signal ram_addr_s                 : std_logic_vector (7 downto 0);
-  signal mem_write_s                : std_logic;
-  signal reg_write_s                : std_logic;
-  signal branch_s                   : std_logic;
-  signal halt_s                     : std_logic;
+  signal clk_s          : std_logic :='0';
+  signal rst_n_s        : std_logic;
+  signal mem_write_s    : std_logic;
+  signal mem_read_s     : std_logic :='0';
+  signal ram_addr_s     : std_logic_vector (7 downto 0) := "00000000";
+  signal data_to_mem_s  : std_logic_vector (15 downto 0);
+  signal instruction_s  : std_logic_vector (15 downto 0);
         
 begin
 
   miTo_i : miTo
   port map(
-    clk                      => clk_s,
-    rst_n                    => reset_s,   
-    decoded_instruction      => decoded_instruction_s,
-    alu_op                   => alu_op_s,
-    state_flag               => state_flag_s,
-    instruction              => instruction_s,
-    ram_addr                 => ram_addr_s,
-    mem_write                => mem_write_s,
-    reg_write                => reg_write_s,
-    branch                   => branch_s,
-    halt                     => halt_s
+    clk             => clk_s,
+    rst_n           => rst_n_s,
+    mem_write       => mem_write_s,
+    mem_read        => mem_read_s,
+    ram_addr        => ram_addr_s,
+    data_to_mem     => data_to_mem_s,
+    instruction     => instruction_s
   );
 
    --clock generator - 100MHZ
   clk_s 	<= not clk_s after 5 ns;
 
    --reset signal
-  reset_s	<= '1' after 2 ns,
+  rst_n_s	<= '1' after 2 ns,
       '0' after 8 ns;
+      
+  ram_addr_s <= "00000001" after 15ns,
+                "00000010" after 25ns,
+                "00000011" after 35ns;
+  
+  mem_read_s <= '1' after 15 ns,
+                '0' after 20 ns,
+                '1' after 25 ns,
+                '0' after 30 ns,
+                '1' after 45 ns,
+                '0' after 50 ns;
+
+  data_to_mem_s <= "0101010101010101" after 25ns;
+  
+  mem_write_s <= '1' after 35ns,
+                 '0' after 40ns;
 
 end Behavioral;
