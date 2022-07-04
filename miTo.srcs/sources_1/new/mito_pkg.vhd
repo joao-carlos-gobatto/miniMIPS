@@ -9,6 +9,41 @@ use IEEE.STD_LOGIC_1164.all;
 use IEEE.STD_LOGIC_UNSIGNED.all;
 
 package mito_pkg is  
+
+    type decoded_instruction_type is (
+        I_ADD,
+        I_SUB,
+        I_LOAD,
+        I_STORE,
+        I_JUMP,
+        I_BEQ,
+        I_BNE,
+        I_HALT
+    );
+
+    type estados is (
+        FETCH,
+        NOP_E,
+        PROX,
+        HALT_E,
+        ADD,
+        SUB,
+        LOAD,
+        LOAD1,
+        LOAD2,
+        LOAD3,
+        STORE,
+        STORE1,
+        STORE2,
+        STORE3,
+        JUMP_E,
+        BEQ,
+        BNE,
+        ULA,
+        BRANCH_E,
+        DECODE
+    );
+    
   component memory is
 	Port (        
 		clk                 	: in	std_logic;
@@ -52,7 +87,6 @@ package mito_pkg is
         instruction     : in	std_logic_vector(15 downto 0)
 	); 
   end component;
-
 end mito_pkg;
 
 package body mito_pkg is
