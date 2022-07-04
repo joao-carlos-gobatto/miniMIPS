@@ -23,25 +23,33 @@ package mito_pkg is
 
   component mito
 	Port (
-		clk                 	: in	std_logic;
-        rst_n               	: in	std_logic;        
-        mem_write           	: in	std_logic;
-		mem_read				: in	std_logic;
-        ram_addr		    	: in	std_logic_vector(7  downto 0);
-		data_to_mem    			: in	std_logic_vector(15 downto 0);
-        instruction         	: out	std_logic_vector(15 downto 0)
+		clk             : in	std_logic;
+        rst_n           : in	std_logic;
+        halt            : in    std_logic;
+        pc_enable       : in    std_logic;
+        is_store        : in    std_logic;        
+        mem_write       : in	std_logic;
+        mem_read        : in	std_logic;
+        jump_addr       : in	std_logic_vector(7  downto 0);
+        ram_addr        : out	std_logic_vector(7  downto 0);
+        data_to_mem     : in	std_logic_vector(15 downto 0);
+        instruction     : out	std_logic_vector(15 downto 0)
 	);
   end component;
   
  component testbench is
 	Port (
-		clk                 	: out	std_logic;
-        rst_n               	: out	std_logic;        
-        mem_write           	: out	std_logic;
-		mem_read				: out	std_logic;
-        ram_addr		    	: out	std_logic_vector(7  downto 0);
-		data_to_mem    			: out	std_logic_vector(15 downto 0);
-        instruction         	: in	std_logic_vector(15 downto 0)
+		clk             : out	std_logic;
+        rst_n           : out	std_logic;
+        halt            : out    std_logic;
+        pc_enable       : out    std_logic;
+        is_store        : out    std_logic;        
+        mem_write       : out	std_logic;
+        mem_read        : out	std_logic;
+        jump_addr       : out	std_logic_vector(7  downto 0);
+        ram_addr        : in	std_logic_vector(7  downto 0);
+        data_to_mem     : out	std_logic_vector(15 downto 0);
+        instruction     : in	std_logic_vector(15 downto 0)
 	); 
   end component;
 
