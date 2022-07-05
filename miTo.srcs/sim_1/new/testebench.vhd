@@ -169,9 +169,17 @@ begin
               case decoded_instruction_s is
                   when I_LOAD =>
                     prox_estado <= LOAD;
---                  when I_STORE =>
---                      mem_access_inst_s <= '1';
---                      prox_estado <= STORE;
+                    
+                  when I_ADD =>
+                    ula_op_s <= '1';
+                    prox_estado <= ULA1;
+                    
+                  when I_SUB =>
+                    ula_op_s <= '0';
+                    prox_estado <= ULA1;
+                    
+                  when I_STORE =>
+                      prox_estado <= STORE;
                   when others =>
                       prox_estado <= HALT_E;
               end case;
@@ -193,13 +201,24 @@ begin
           reg_write_s <= '0';
           prox_estado <= PROX;
   
---      when STORE =>
---          mem_write_s <= '1';
---          prox_estado <= STORE1;
+      when STORE =>
+          mem_access_inst_s <= '1';
+          mem_write_s <= '1';
+          prox_estado <= STORE1;
           
---      when STORE1 =>
---          mem_write_s <= '0';
---          prox_estado <= PROX;
+      when STORE1 =>
+          mem_access_inst_s <= '0';
+          mem_write_s <= '0';
+          prox_estado <= PROX;
+
+      when ULA1 =>
+        select_data_s <= '0';
+        reg_write_s <= '1';
+        prox_estado <= ULA2;
+        
+      when ULA2 =>
+        reg_write_s <= '0';
+        prox_estado <= PROX;
   
       when PROX =>
           pc_enable_s <= '1';

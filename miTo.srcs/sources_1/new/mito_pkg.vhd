@@ -39,7 +39,8 @@ package mito_pkg is
     JUMP_E,
     BEQ,
     BNE,
-    ULA_E,
+    ULA1,
+    ULA2,
     BRANCH_E,
     DECODE
   );

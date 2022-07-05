@@ -41,6 +41,7 @@ begin
     r1 <= r1_s;
     r2 <= r2_s;
     r3 <= r3_s;
+    
     process(clk)
     begin
         if(clk = '1' and clk'event) then
@@ -55,8 +56,19 @@ begin
                     when others =>
                         r3_s <= data;
                 end case;
+            else
+            case(addr_dest) is
+                    when "00" =>
+                        data_to_mem <= r0_s;
+                    when "01" =>
+                        data_to_mem <= r1_s; 
+                    when "10" => 
+                        data_to_mem <= r2_s;
+                    when others =>
+                        data_to_mem <= r3_s;
+                end case;
             end if;
-    
+            
             case(addr_a) is
                 when "00" => 
                     s0 <= r0_s;
@@ -71,16 +83,12 @@ begin
             case(addr_b) is
                 when "00" => 
                     s1 <= r0_s;
-                    data_to_mem <= r0_s;
                 when "01" => 
                     s1 <= r1_s;
-                    data_to_mem <= r1_s;
                 when "10" => 
                     s1 <= r2_s;
-                    data_to_mem <= r2_s;
                 when others => 
                     s1 <= r3_s;
-                    data_to_mem <= r3_s;
             end case;
         end if;
     end process;
