@@ -43,10 +43,8 @@ begin
                 decoded_instruction <= I_SUB;
             when "110"=>
                 decoded_instruction <= I_BNE;
-            when "111"=>
+            when others=>
                 decoded_instruction <= I_STORE;
-            when others =>
-                decoded_instruction <= I_NOP;
         end case;
         addr_dest <= instruction(12 downto 11);
         addr_a <= instruction(10 downto 9);

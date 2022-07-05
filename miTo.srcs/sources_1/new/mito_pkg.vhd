@@ -50,27 +50,18 @@ package mito_pkg is
         rst_n               	: in	std_logic;        
         mem_write           	: in	std_logic;
 		mem_read				: in	std_logic;
-        ram_addr		    	: in	std_logic_vector(7  downto 0);
+        ram_addr		    	: in	std_logic_vector(6  downto 0);
 		data_to_mem    			: in	std_logic_vector(15 downto 0);
         instruction         	: out	std_logic_vector(15 downto 0)
-package mito_pkg is
-  	type decoded_instruction_type is (
-		I_NOP,
-		I_ADD,
-		I_SUB,
-		I_LOAD,
-		I_STORE,
-		I_JUMP,
-		I_BEQ,
-		I_BNE,
-		I_HALT
-	);
+  );
+  end component;
+
   component decoder
 	Port (
 		instruction           : in  std_logic_vector (15 downto 0);
 		addr_a                : out std_logic_vector(1 downto 0);
 		addr_b                : out std_logic_vector(1 downto 0);
-		addr_dest                : out std_logic_vector(1 downto 0);
+		addr_dest             : out std_logic_vector(1 downto 0);
 		inst_addr             : out std_logic_vector(6 downto 0);
 		decoded_instruction   : out decoded_instruction_type
 	);
@@ -85,11 +76,9 @@ package mito_pkg is
         is_store        : in    std_logic;        
         mem_write       : in	std_logic;
         mem_read        : in	std_logic;
-        jump_addr       : in	std_logic_vector(7  downto 0);
-        ram_addr        : out	std_logic_vector(7  downto 0);
+        ram_addr        : out	std_logic_vector(6  downto 0);
         data_to_mem     : in	std_logic_vector(15 downto 0);
-        instruction     : out	std_logic_vector(15 downto 0)
-		instruction           : in  std_logic_vector (15 downto 0);
+        instruction     : out	std_logic_vector(15 downto 0);
     	addr_a                : out std_logic_vector(1 downto 0);
     	addr_b                : out std_logic_vector(1 downto 0);
     	addr_dest                : out std_logic_vector(1 downto 0);
@@ -107,10 +96,8 @@ package mito_pkg is
         is_store        : out    std_logic;        
         mem_write       : out	std_logic;
         mem_read        : out	std_logic;
-        jump_addr       : out	std_logic_vector(7  downto 0);
-        ram_addr        : in	std_logic_vector(7  downto 0);
+        ram_addr        : in	std_logic_vector(6  downto 0);
         data_to_mem     : out	std_logic_vector(15 downto 0);
-        instruction     : in	std_logic_vector(15 downto 0)
 		instruction           : out  std_logic_vector (15 downto 0);
     	addr_a                : in std_logic_vector(1 downto 0);
     	addr_b                : in std_logic_vector(1 downto 0);
@@ -120,6 +107,5 @@ package mito_pkg is
 	); 
   end component;
 end mito_pkg;
-
 package body mito_pkg is
 end mito_pkg;
