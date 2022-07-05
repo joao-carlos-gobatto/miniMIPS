@@ -23,6 +23,12 @@ entity miTo is
     ram_addr        : out	std_logic_vector(7  downto 0);
     data_to_mem     : in	std_logic_vector(15 downto 0);
     instruction     : out	std_logic_vector(15 downto 0)
+    instruction           : in  std_logic_vector (15 downto 0);       --Instrução saindo da memória
+    addr_a                : out std_logic_vector(1 downto 0);
+    addr_b                : out std_logic_vector(1 downto 0);
+    addr_dest             : out std_logic_vector(1 downto 0);
+    inst_addr             : out std_logic_vector(6 downto 0);
+    decoded_instruction   : out decoded_instruction_type   --Instrução decodificada pelo decoder.
   );
 end miTo;
 
@@ -71,6 +77,15 @@ memory_i : memory
     ram_addr      =>  ram_addr_s,
     data_to_mem   =>  data_to_mem,
     instruction   =>  instruction
+begin
+decoder_i : decoder
+  Port map (
+    instruction          => instruction,
+    addr_a               => addr_a,
+    addr_b               => addr_b,
+    addr_dest            => addr_dest,
+    inst_addr            => inst_addr,
+    decoded_instruction  => decoded_instruction
   );
  
 end rtl;
