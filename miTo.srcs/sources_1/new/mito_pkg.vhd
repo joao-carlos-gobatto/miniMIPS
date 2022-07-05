@@ -139,11 +139,11 @@ package mito_pkg is
 		--Sinais de controle
     clk                   : out	std_logic;
     rst_n                 : out	std_logic;
-    halt                  : out  std_logic;
-    select_data           : out  std_logic;        
-    ula_op                : out  std_logic;
-    reg_write		          : out  std_logic;
-    pc_enable             : out  std_logic;
+    halt                  : out std_logic;
+    select_data           : out std_logic;        
+    ula_op                : out std_logic;
+    reg_write		          : out std_logic;
+    pc_enable             : out std_logic;
     mem_write             : out	std_logic;
     mem_read              : out	std_logic;
 
