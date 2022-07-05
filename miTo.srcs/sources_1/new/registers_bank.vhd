@@ -14,7 +14,7 @@ entity registers_bank is
   Port(
     clk             : in std_logic;
     reg_write       : in std_logic;
-    instruction     : in std_logic_vector(15 downto 0);
+    data            : in std_logic_vector(15 downto 0);
     addr_dest       : in std_logic_vector(1 downto 0);
     addr_a          : in std_logic_vector(1 downto 0);
     addr_b          : in std_logic_vector(1 downto 0);
@@ -47,13 +47,13 @@ begin
             if(reg_write = '1') then
                 case(addr_dest) is
                     when "00" =>
-                        r0_s <= instruction;
+                        r0_s <= data;
                     when "01" =>
-                        r1_s <= instruction; 
+                        r1_s <= data; 
                     when "10" => 
-                        r2_s <= instruction;
+                        r2_s <= data;
                     when others =>
-                        r3_s <= instruction;
+                        r3_s <= data;
                 end case;
             end if;
     

@@ -25,6 +25,9 @@ architecture Behavioral of testebench is
         pc_enable             : in  std_logic;
         mem_write             : in	std_logic;
         mem_read              : in	std_logic;
+        mem_access_inst       : in  std_logic;
+        read_decoder          : in  std_logic;
+        
 
         --Sinais memória
         ram_addr              : out	std_logic_vector(6  downto 0);
@@ -62,21 +65,23 @@ architecture Behavioral of testebench is
   signal pc_enable_s             : std_logic :='0';
   signal mem_write_s             : std_logic :='0';
   signal mem_read_s              : std_logic :='0';
+  signal mem_access_inst_s       : std_logic :='0';
   signal estado_atual            : estados;
   signal prox_estado             : estados;
 
-  -Sinais Memória
+  --Sinais Memória
   signal ram_addr_s              : std_logic_vector (6 downto 0) := "0000000";
   signal instruction_s           : std_logic_vector (15 downto 0);
   
-  -Sinais Decoder
+  --Sinais Decoder
   signal addr_a_s                : std_logic_vector(1 downto 0);
   signal addr_b_s                : std_logic_vector(1 downto 0);
   signal addr_dest_s             : std_logic_vector(1 downto 0);
   signal inst_addr_s             : std_logic_vector(6 downto 0);
+  signal read_decoder_s          : std_logic := '0';
   signal decoded_instruction_s   : decoded_instruction_type;
 
-  -Sinais Banco de Registradores
+  --Sinais Banco de Registradores
   signal data_to_mem_s           : std_logic_vector (15 downto 0);
   signal r0_s                    : std_logic_vector(15 downto 0);
   signal r1_s                    : std_logic_vector(15 downto 0);
@@ -85,7 +90,7 @@ architecture Behavioral of testebench is
   signal s0_s                    : std_logic_vector(15 downto 0);
   signal s1_s                    : std_logic_vector(15 downto 0);       
 
-  -Sinais ULA
+  --Sinais ULA
   signal ula_out_s               : std_logic_vector(15 downto 0);
   signal zero_flag_s             : std_logic;
 
@@ -102,13 +107,14 @@ begin
     pc_enable               => pc_enable_s,
     mem_write               => mem_write_s,
     mem_read                => mem_read_s,
+    mem_access_inst         => mem_access_inst_s,
+    read_decoder            => read_decoder_s,
 
     --Memória
     ram_addr                => ram_addr_s,
     instruction             => instruction_s,
 
     --Decoder
-    data_to_mem             => data_to_mem_s,
     addr_a                  => addr_a_s,
     addr_b                  => addr_b_s,
     addr_dest               => addr_dest_s,
@@ -152,47 +158,50 @@ begin
       case(estado_atual) is
           when FETCH =>
               mem_read_s <= '1';
+              read_decoder_s <= '1';
               pc_enable_s <= '0';
               prox_estado <= DECODE;
   
           when DECODE =>
+              read_decoder_s <= '0';
               mem_read_s <= '0';
               pc_enable_s <= '0';
-              case decoded_instruction_s is  
+              case decoded_instruction_s is
                   when I_LOAD =>
---                      is_load_s <= '1';
-                      prox_estado <= LOAD;
-                  when I_STORE =>
-                      is_store_s <= '1';
-                      prox_estado <= STORE;
+                    prox_estado <= LOAD;
+--                  when I_STORE =>
+--                      mem_access_inst_s <= '1';
+--                      prox_estado <= STORE;
                   when others =>
                       prox_estado <= HALT_E;
               end case;
   
-          when LOAD =>
-              prox_estado <= PROX;
+      when LOAD =>
+          select_data_s <= '1';
+          mem_access_inst_s <= '1';
+          mem_read_s <= '1';
+          prox_estado <= LOAD1;
+      
+      when LOAD1 =>
+          reg_write_s <= '1';
+          prox_estado <= LOAD2;
           
---          when LOAD1 =>
---              prox_estado <= LOAD2;
-          
---          when LOAD2 =>
---              reg_write_s <= '1';
---              prox_estado <= LOAD3;
-          
---          when LOAD3 =>
---              prox_estado <= PROX;
-  
-      when STORE =>
-          mem_write_s <= '1';
-          prox_estado <= STORE1;
-          
-      when STORE1 =>
-          is_store_s <= '0';
-          mem_write_s <= '0';
+      when LOAD2 =>
+          mem_read_s <= '0';
+          select_data_s <= '0';
+          mem_access_inst_s <= '0';
+          reg_write_s <= '0';
           prox_estado <= PROX;
   
+--      when STORE =>
+--          mem_write_s <= '1';
+--          prox_estado <= STORE1;
+          
+--      when STORE1 =>
+--          mem_write_s <= '0';
+--          prox_estado <= PROX;
+  
       when PROX =>
-          mem_read_s <='0';
           pc_enable_s <= '1';
           prox_estado <= FETCH;
   

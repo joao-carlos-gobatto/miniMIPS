@@ -39,7 +39,7 @@ package mito_pkg is
     JUMP_E,
     BEQ,
     BNE,
-    ULA,
+    ULA_E,
     BRANCH_E,
     DECODE
   );
@@ -59,6 +59,7 @@ package mito_pkg is
   component decoder is
 	Port (
 		instruction           : in  std_logic_vector (15 downto 0);
+		read_decoder        : in  std_logic;
 		addr_a                : out std_logic_vector(1 downto 0);
 		addr_b                : out std_logic_vector(1 downto 0);
 		addr_dest             : out std_logic_vector(1 downto 0);
@@ -71,7 +72,7 @@ package mito_pkg is
 	Port (
 		clk                   : in  std_logic;
 		reg_write		          : in  std_logic;
-    instruction           : in  std_logic_vector(15 downto 0);
+    data                  : in  std_logic_vector(15 downto 0);
     addr_dest             : in  std_logic_vector(1 downto 0);
     addr_a                : in  std_logic_vector(1 downto 0);
     addr_b                : in  std_logic_vector(1 downto 0);
@@ -107,6 +108,8 @@ package mito_pkg is
     pc_enable             : in  std_logic;
     mem_write             : in	std_logic;
     mem_read              : in	std_logic;
+    mem_access_inst       : in  std_logic;
+    read_decoder        : in  std_logic;
 
     --Sinais memória
     ram_addr              : out	std_logic_vector(6  downto 0);
@@ -142,10 +145,12 @@ package mito_pkg is
     halt                  : out std_logic;
     select_data           : out std_logic;        
     ula_op                : out std_logic;
-    reg_write		          : out std_logic;
+    reg_write		      : out std_logic;
     pc_enable             : out std_logic;
     mem_write             : out	std_logic;
     mem_read              : out	std_logic;
+    mem_access_inst       : out  std_logic;
+    read_decoder          : out  std_logic;
 
     --Sinais memória
     ram_addr              : in	std_logic_vector(6  downto 0);
@@ -168,7 +173,7 @@ package mito_pkg is
     s1                    : in std_logic_vector(15 downto 0);
 
     --Sinais ULA
-    ula_out			          : in std_logic_vector(15 downto 0);
+    ula_out			      : in std_logic_vector(15 downto 0);
     zero_flag             : in std_logic
 	); 
   end component;
