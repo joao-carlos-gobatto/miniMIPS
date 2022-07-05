@@ -13,10 +13,10 @@ use mito.mito_pkg.all;
 entity decoder is
   Port(
     instruction           : in  std_logic_vector (15 downto 0);       --Instrução saindo da memória
-    addr_a    : out std_logic_vector(1 downto 0);
-    addr_b    : out std_logic_vector(1 downto 0);
-    addr_dest : out std_logic_vector(1 downto 0);
-    inst_addr : out std_logic_vector(6 downto 0);
+    addr_a                : out std_logic_vector(1 downto 0);
+    addr_b                : out std_logic_vector(1 downto 0);
+    addr_dest             : out std_logic_vector(1 downto 0);
+    inst_addr             : out std_logic_vector(6 downto 0);
     decoded_instruction   : out decoded_instruction_type   --Instrução decodificada pelo decoder.
   );
   
