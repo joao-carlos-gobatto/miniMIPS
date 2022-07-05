@@ -28,6 +28,8 @@ entity control_unit is
   end control_unit;
 
 architecture Behavioral of control_unit is
+    signal estado_atual : estados;
+    signal prox_estado  : estados;
 begin  
   process (clk)
     begin
