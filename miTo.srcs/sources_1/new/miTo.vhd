@@ -12,66 +12,86 @@ use mito.mito_pkg.all;
 
 entity miTo is
   Port (
-    clk             : in	std_logic;
-    rst_n           : in	std_logic;
-    halt            : in    std_logic;
-    pc_enable       : in    std_logic;
-    select_data     : in    std_logic;
-    reg_write       : in    std_logic;
-    mem_write       : in	std_logic;
-    mem_read        : in	std_logic;
-    mem_access_inst : in    std_logic;
-    read_decoder    : in    std_logic;
+    clk                   : in	std_logic;
+    rst_n                 : in	std_logic;
+    halt                  : out  std_logic;
+    pc_enable             : out  std_logic;
+    select_data           : out  std_logic;
+    reg_write             : out  std_logic;
+    mem_write             : out	std_logic;
+    mem_read              : out	std_logic;
+    mem_access_inst       : out  std_logic;
+    read_decoder          : out  std_logic;
     
-    ram_addr        : out	std_logic_vector(6  downto 0);
-    instruction     : out	std_logic_vector(15 downto 0);
+    ram_addr              : out	std_logic_vector(6  downto 0);
+    instruction           : out	std_logic_vector(15 downto 0);
     addr_a                : out std_logic_vector(1 downto 0);
     addr_b                : out std_logic_vector(1 downto 0);
     addr_dest             : out std_logic_vector(1 downto 0);
     inst_addr             : out std_logic_vector(6 downto 0);
     decoded_instruction   : out decoded_instruction_type;
     
-    data_to_mem     : out std_logic_vector(15 downto 0);
-    s0              : out std_logic_vector(15 downto 0);
-    s1              : out std_logic_vector(15 downto 0);
-    r0              : out std_logic_vector(15 downto 0);
-    r1              : out std_logic_vector(15 downto 0);
-    r2              : out std_logic_vector(15 downto 0);
-    r3              : out std_logic_vector(15 downto 0);
+    data_to_mem           : out std_logic_vector(15 downto 0);
+    s0                    : out std_logic_vector(15 downto 0);
+    s1                    : out std_logic_vector(15 downto 0);
+    r0                    : out std_logic_vector(15 downto 0);
+    r1                    : out std_logic_vector(15 downto 0);
+    r2                    : out std_logic_vector(15 downto 0);
+    r3                    : out std_logic_vector(15 downto 0);
 
-    ula_op          : in  std_logic;
-    ula_out         : out  std_logic_vector(15 downto 0);
-    zero_flag       : out  std_logic
+    ula_op                : out std_logic;
+    ula_out               : out std_logic_vector(15 downto 0);
+    zero_flag             : out std_logic
   );
 end miTo;
 
 architecture rtl of miTo is
-signal pc : std_logic_vector(6 downto 0) := "0000000";
-signal ram_addr_s : std_logic_vector(6 downto 0) := "0000000";
-signal instruction_s  : std_logic_vector(15 downto 0);
-signal inst_addr_s    : std_logic_vector(6 downto 0);
-signal mux_registers_bank : std_logic_vector(15 downto 0);
-signal data_to_mem_s : std_logic_vector(15 downto 0);
-signal addr_dest_s : std_logic_vector(1 downto 0);
-signal addr_a_s : std_logic_vector(1 downto 0);
-signal addr_b_s : std_logic_vector(1 downto 0);
-signal s0_s : std_logic_vector(15 downto 0) := "0000000000000000";
-signal s1_s : std_logic_vector(15 downto 0) := "0000000000000000";
-signal ula_out_s : std_logic_vector(15 downto 0) := "0000000000000000";
+signal pc                      : std_logic_vector(6 downto 0) := "0000000";
+signal ram_addr_s              : std_logic_vector(6 downto 0) := "0000000";
+signal instruction_s           : std_logic_vector(15 downto 0);
+signal inst_addr_s             : std_logic_vector(6 downto 0);
+signal mux_registers_bank      : std_logic_vector(15 downto 0);
+signal data_to_mem_s           : std_logic_vector(15 downto 0);
+signal addr_dest_s             : std_logic_vector(1 downto 0);
+signal addr_a_s                : std_logic_vector(1 downto 0);
+signal addr_b_s                : std_logic_vector(1 downto 0);
+signal s0_s                    : std_logic_vector(15 downto 0) := "0000000000000000";
+signal s1_s                    : std_logic_vector(15 downto 0) := "0000000000000000";
+signal ula_out_s               : std_logic_vector(15 downto 0) := "0000000000000000";
+signal decoded_instruction_s   : decoded_instruction_type;
+signal zero_flag_s             : std_logic;
+signal halt_s                  : std_logic;
+signal select_data_s           : std_logic;
+signal ula_op_s                : std_logic;
+signal reg_write_s             : std_logic;
+signal pc_enable_s             : std_logic;
+signal mem_write_s             : std_logic;
+signal mem_read_s              : std_logic;
+signal mem_access_inst_s       : std_logic;
+signal read_decoder_s          : std_logic;
 
 begin
-
-  ram_addr <= ram_addr_s;
-  instruction <= instruction_s;
-  inst_addr <= inst_addr_s;
-  s0 <= s0_s;
-  s1 <= s1_s;
-  ula_out <= ula_out_s;
-  data_to_mem <= data_to_mem_s;
-  addr_a <= addr_a_s;
-  addr_b <= addr_b_s;
-  addr_dest <= addr_dest_s;
-  
+  ram_addr              <= ram_addr_s;
+  instruction           <= instruction_s;
+  inst_addr             <= inst_addr_s;
+  s0                    <= s0_s;
+  s1                    <= s1_s;
+  ula_out               <= ula_out_s;
+  data_to_mem           <= data_to_mem_s;
+  addr_a                <= addr_a_s;
+  addr_b                <= addr_b_s;
+  addr_dest             <= addr_dest_s;
+  decoded_instruction   <= decoded_instruction_s;
+  halt                  <= halt_s;
+  select_data           <= select_data_s;
+  ula_op                <= ula_op_s;
+  reg_write             <= reg_write_s;
+  pc_enable             <= pc_enable_s;
+  mem_write             <= mem_write_s;
+  mem_read              <= mem_read_s;
+  mem_access_inst       <= mem_access_inst_s;
+  read_decoder          <= read_decoder_s;
+  zero_flag             <= zero_flag_s;
 
   program_counter:process(clk)
   begin    
@@ -79,10 +99,10 @@ begin
           pc <= "0000000";
       else
           if(clk='1' and clk'event) then
-              if(halt = '1') then
+              if(halt_s = '1') then
                   pc <= pc;
               else
-                  if(pc_enable = '1') then
+                  if(pc_enable_s = '1') then
                       pc <= pc + 1;
                   end if;
               end if;
@@ -90,10 +110,10 @@ begin
       end if;
   end process;
 
-  --MUX de endereço de memória
-  ram_mux:process(mem_access_inst, inst_addr_s, pc)
+  --MUX de endereï¿½o de memï¿½ria
+  ram_mux:process(mem_access_inst_s, inst_addr_s, pc)
   begin
-      if(mem_access_inst = '1') then
+      if(mem_access_inst_s = '1') then
         ram_addr_s <= inst_addr_s;
       else
         ram_addr_s <= pc;
@@ -101,9 +121,9 @@ begin
   end process;
 
   --MUX de entrada do banco de registradores
-  registers_mux:process(select_data,instruction_s,ula_out_s)
+  registers_mux:process(select_data_s,instruction_s,ula_out_s)
   begin
-      if(select_data='1') then
+      if(select_data_s='1') then
           mux_registers_bank <= instruction_s;
       else
           mux_registers_bank <= ula_out_s;
@@ -114,8 +134,8 @@ begin
     Port map(
       clk           =>  clk,
       rst_n         =>  rst_n,
-      mem_write     =>  mem_write,
-      mem_read      =>  mem_read,
+      mem_write     =>  mem_write_s,
+      mem_read      =>  mem_read_s,
       ram_addr      =>  ram_addr_s,
       data_to_mem   =>  data_to_mem_s,
       instruction   =>  instruction_s
@@ -128,14 +148,14 @@ begin
       addr_b               => addr_b_s,
       addr_dest            => addr_dest_s,
       inst_addr            => inst_addr_s,
-      read_decoder         => read_decoder,
+      read_decoder         => read_decoder_s,
       decoded_instruction  => decoded_instruction
     );
     
   registers_bank_i : registers_bank
     Port map (
       clk             => clk,
-      reg_write       => reg_write,
+      reg_write       => reg_write_s,
       data            => mux_registers_bank,
       addr_dest       => addr_dest_s,
       addr_a          => addr_a_s,
@@ -151,11 +171,28 @@ begin
     
   ula_i : ula
     Port map (
-      ula_op                     => ula_op,
+      ula_op                     => ula_op_s,
       s0                         => s0_s,
       s1                         => s1_s,
       ula_out                    => ula_out_s,
-      zero_flag                  => zero_flag
+      zero_flag                  => zero_flag_s
+    );
+
+  control_unit_i : control_unit
+    Port map (
+        --Sinais de controle
+        clk                   => clk,
+        rst_n                 => rst_n,
+        decoded_instruction   => decoded_instruction_s,
+        halt                  => halt_s,
+        select_data           => select_data_s,
+        ula_op                => ula_op_s,
+        reg_write		      => reg_write_s,
+        pc_enable             => pc_enable_s,
+        mem_write             => mem_write_s,
+        mem_read              => mem_read_s,
+        mem_access_inst       => mem_access_inst_s,
+        read_decoder          => read_decoder_s
     );
  
 end rtl;

@@ -31,11 +31,8 @@ package mito_pkg is
     LOAD,
     LOAD1,
     LOAD2,
-    LOAD3,
     STORE,
     STORE1,
-    STORE2,
-    STORE3,
     JUMP_E,
     BEQ,
     BNE,
@@ -60,7 +57,7 @@ package mito_pkg is
   component decoder is
 	Port (
 		instruction           : in  std_logic_vector (15 downto 0);
-		read_decoder        : in  std_logic;
+		read_decoder          : in  std_logic;
 		addr_a                : out std_logic_vector(1 downto 0);
 		addr_b                : out std_logic_vector(1 downto 0);
 		addr_dest             : out std_logic_vector(1 downto 0);
@@ -102,15 +99,15 @@ package mito_pkg is
 		--Sinais de controle
     clk                   : in	std_logic;
     rst_n                 : in	std_logic;
-    halt                  : in  std_logic;
-    select_data           : in  std_logic;        
-    ula_op                : in  std_logic;
-    reg_write		          : in  std_logic;
-    pc_enable             : in  std_logic;
-    mem_write             : in	std_logic;
-    mem_read              : in	std_logic;
-    mem_access_inst       : in  std_logic;
-    read_decoder        : in  std_logic;
+    halt                  : out std_logic;
+    select_data           : out std_logic;        
+    ula_op                : out std_logic;
+    reg_write		          : out std_logic;
+    pc_enable             : out std_logic;
+    mem_write             : out std_logic;
+    mem_read              : out std_logic;
+    mem_access_inst       : out std_logic;
+    read_decoder          : out std_logic;
 
     --Sinais memória
     ram_addr              : out	std_logic_vector(6  downto 0);
@@ -137,35 +134,53 @@ package mito_pkg is
     zero_flag             : out std_logic
 	);
   end component;
+
+  component control_unit is
+    Port (
+      --Sinais de controle
+      clk                   : in	std_logic;
+      rst_n                 : in  std_logic;
+      decoded_instruction   : in  decoded_instruction_type;
+      halt                  : out std_logic;
+      select_data           : out std_logic;        
+      ula_op                : out std_logic;
+      reg_write		          : out std_logic;
+      pc_enable             : out std_logic;
+      mem_write             : out	std_logic;
+      mem_read              : out	std_logic;
+      mem_access_inst       : out std_logic;
+      read_decoder          : out std_logic
+    );
+  end component;
   
  component testbench is
 	Port (
 		--Sinais de controle
     clk                   : out	std_logic;
     rst_n                 : out	std_logic;
-    halt                  : out std_logic;
-    select_data           : out std_logic;        
-    ula_op                : out std_logic;
-    reg_write		      : out std_logic;
-    pc_enable             : out std_logic;
-    mem_write             : out	std_logic;
-    mem_read              : out	std_logic;
-    mem_access_inst       : out  std_logic;
-    read_decoder          : out  std_logic;
+    halt                  : in  std_logic;
+    select_data           : in  std_logic;        
+    ula_op                : in  std_logic;
+    reg_write		          : in  std_logic;
+    pc_enable             : in  std_logic;
+    mem_write             : in	std_logic;
+    mem_read              : in	std_logic;
+    mem_access_inst       : in  std_logic;
+    read_decoder          : in  std_logic;
 
     --Sinais memória
     ram_addr              : in	std_logic_vector(6  downto 0);
     instruction           : in	std_logic_vector(15 downto 0);
 
     --Sinais Decoder
-    addr_a                : in std_logic_vector(1 downto 0);
-    addr_b                : in std_logic_vector(1 downto 0);
-    addr_dest             : in std_logic_vector(1 downto 0);
-    inst_addr             : in std_logic_vector(6 downto 0);
-    decoded_instruction   : in decoded_instruction_type;
+    addr_a                : in  std_logic_vector(1 downto 0);
+    addr_b                : in  std_logic_vector(1 downto 0);
+    addr_dest             : in  std_logic_vector(1 downto 0);
+    inst_addr             : in  std_logic_vector(6 downto 0);
+    decoded_instruction   : in  decoded_instruction_type;
     
     --Sinais Banco de registradores
-    data_to_mem           : in	std_logic_vector(15 downto 0);
+    data_to_mem           : in std_logic_vector(15 downto 0);
     r0                    : in std_logic_vector(15 downto 0);
     r1                    : in std_logic_vector(15 downto 0);
     r2                    : in std_logic_vector(15 downto 0);
@@ -174,7 +189,7 @@ package mito_pkg is
     s1                    : in std_logic_vector(15 downto 0);
 
     --Sinais ULA
-    ula_out			      : in std_logic_vector(15 downto 0);
+    ula_out			          : in std_logic_vector(15 downto 0);
     zero_flag             : in std_logic
 	); 
   end component;
