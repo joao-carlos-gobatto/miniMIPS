@@ -16,24 +16,21 @@ entity miTo is
     rst_n           : in	std_logic;
     halt            : in    std_logic;
     pc_enable       : in    std_logic;
-    select_data     : in    std_logic;        
-    
+    select_data     : in    std_logic;
+    reg_write       : in    std_logic;
     mem_write       : in	std_logic;
     mem_read        : in	std_logic;
+    mem_access_inst : in    std_logic;
+    read_decoder    : in    std_logic;
+    
     ram_addr        : out	std_logic_vector(6  downto 0);
     instruction     : out	std_logic_vector(15 downto 0);
     addr_a                : out std_logic_vector(1 downto 0);
     addr_b                : out std_logic_vector(1 downto 0);
     addr_dest             : out std_logic_vector(1 downto 0);
     inst_addr             : out std_logic_vector(6 downto 0);
-    decoded_instruction   : out decoded_instruction_type
+    decoded_instruction   : out decoded_instruction_type;
     
-    is_load         : in std_logic;
-    reg_write       : in std_logic;
-    data            : in std_logic_vector(15 downto 0);
-    addr_dest       : in std_logic_vector(1 downto 0);
-    addr_a          : in std_logic_vector(1 downto 0);
-    addr_b          : in std_logic_vector(1 downto 0);
     data_to_mem     : out std_logic_vector(15 downto 0);
     s0              : out std_logic_vector(15 downto 0);
     s1              : out std_logic_vector(15 downto 0);
@@ -54,6 +51,10 @@ signal ram_addr_s : std_logic_vector(6 downto 0) := "0000000";
 signal instruction_s  : std_logic_vector(15 downto 0);
 signal inst_addr_s    : std_logic_vector(6 downto 0);
 signal mux_registers_bank : std_logic_vector(15 downto 0);
+signal data_to_mem_s : std_logic_vector(15 downto 0);
+signal addr_dest_s : std_logic_vector(1 downto 0);
+signal addr_a_s : std_logic_vector(1 downto 0);
+signal addr_b_s : std_logic_vector(1 downto 0);
 signal s0_s : std_logic_vector(15 downto 0) := "0000000000000000";
 signal s1_s : std_logic_vector(15 downto 0) := "0000000000000000";
 signal ula_out_s : std_logic_vector(15 downto 0) := "0000000000000000";
@@ -66,6 +67,10 @@ begin
   s0 <= s0_s;
   s1 <= s1_s;
   ula_out <= ula_out_s;
+  data_to_mem <= data_to_mem_s;
+  addr_a <= addr_a_s;
+  addr_b <= addr_b_s;
+  addr_dest <= addr_dest_s;
   
 
   program_counter:process(clk)
@@ -85,17 +90,18 @@ begin
       end if;
   end process;
 
-  store_mux:process(select_data, pc, inst_addr_s)
+  --MUX de endereço de memória
+  ram_mux:process(mem_access_inst, inst_addr_s, pc)
   begin
-      if(select_data = '1') then
-        ram_addr_s <= instruction_s;
+      if(mem_access_inst = '1') then
+        ram_addr_s <= inst_addr_s;
       else
         ram_addr_s <= pc;
       end if;
   end process;
 
   --MUX de entrada do banco de registradores
-  process(clk)
+  registers_mux:process(select_data,instruction_s,ula_out_s)
   begin
       if(select_data='1') then
           mux_registers_bank <= instruction_s;
@@ -111,17 +117,18 @@ begin
       mem_write     =>  mem_write,
       mem_read      =>  mem_read,
       ram_addr      =>  ram_addr_s,
-      data_to_mem   =>  data_to_mem,
+      data_to_mem   =>  data_to_mem_s,
       instruction   =>  instruction_s
     );
 
   decoder_i : decoder
     Port map (
       instruction          => instruction_s,
-      addr_a               => addr_a,
-      addr_b               => addr_b,
-      addr_dest            => addr_dest,
+      addr_a               => addr_a_s,
+      addr_b               => addr_b_s,
+      addr_dest            => addr_dest_s,
       inst_addr            => inst_addr_s,
+      read_decoder         => read_decoder,
       decoded_instruction  => decoded_instruction
     );
     
@@ -129,11 +136,11 @@ begin
     Port map (
       clk             => clk,
       reg_write       => reg_write,
-      instruction     => mux_registers_bank,
-      addr_dest       => addr_dest,
-      addr_a          => addr_a,
-      addr_b          => addr_b,
-      data_to_mem     => data_to_mem,
+      data            => mux_registers_bank,
+      addr_dest       => addr_dest_s,
+      addr_a          => addr_a_s,
+      addr_b          => addr_b_s,
+      data_to_mem     => data_to_mem_s,
       s0              => s0_s,
       s1              => s1_s,
       r0              => r0,
