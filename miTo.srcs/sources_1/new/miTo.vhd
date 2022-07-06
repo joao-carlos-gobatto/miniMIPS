@@ -22,6 +22,9 @@ entity miTo is
     mem_read              : out	std_logic;
     mem_access_inst       : out  std_logic;
     read_decoder          : out  std_logic;
+    is_jump               : out std_logic;
+    is_branch             : out std_logic;
+    is_beq                : out std_logic;
     
     ram_addr              : out	std_logic_vector(6  downto 0);
     instruction           : out	std_logic_vector(15 downto 0);
@@ -30,6 +33,8 @@ entity miTo is
     addr_dest             : out std_logic_vector(1 downto 0);
     inst_addr             : out std_logic_vector(6 downto 0);
     decoded_instruction   : out decoded_instruction_type;
+    estado_atual          : out estados;
+    prox_estado           : out estados;
     
     data_to_mem           : out std_logic_vector(15 downto 0);
     s0                    : out std_logic_vector(15 downto 0);
@@ -59,6 +64,9 @@ signal s0_s                    : std_logic_vector(15 downto 0) := "0000000000000
 signal s1_s                    : std_logic_vector(15 downto 0) := "0000000000000000";
 signal ula_out_s               : std_logic_vector(15 downto 0) := "0000000000000000";
 signal decoded_instruction_s   : decoded_instruction_type;
+signal is_jump_s               : std_logic;
+signal is_branch_s             : std_logic;
+signal is_beq_s                : std_logic;
 signal zero_flag_s             : std_logic;
 signal halt_s                  : std_logic;
 signal select_data_s           : std_logic;
@@ -69,6 +77,9 @@ signal mem_write_s             : std_logic;
 signal mem_read_s              : std_logic;
 signal mem_access_inst_s       : std_logic;
 signal read_decoder_s          : std_logic;
+signal is_beq_xnor_zero        : std_logic;
+signal is_branch_and_valid     : std_logic;
+signal is_jump_or_valid_branch : std_logic;
 
 begin
   ram_addr              <= ram_addr_s;
@@ -92,6 +103,12 @@ begin
   mem_access_inst       <= mem_access_inst_s;
   read_decoder          <= read_decoder_s;
   zero_flag             <= zero_flag_s;
+  is_jump               <= is_jump_s;
+  is_branch             <= is_branch_s;
+  is_beq                <= is_beq_s;
+  is_beq_xnor_zero      <= is_beq_s xnor zero_flag_s;
+  is_branch_and_valid   <= is_beq_xnor_zero and is_branch_s;
+  is_jump_or_valid_branch <= is_jump_s or is_branch_and_valid;
 
   program_counter:process(clk)
   begin    
@@ -101,10 +118,10 @@ begin
           if(clk='1' and clk'event) then
               if(halt_s = '1') then
                   pc <= pc;
-              else
-                  if(pc_enable_s = '1') then
+              elsif(pc_enable_s = '1') then
                       pc <= pc + 1;
-                  end if;
+              elsif(is_jump_or_valid_branch = '1') then
+                      pc <= inst_addr_s - 1;
               end if;
           end if;
       end if;
@@ -149,7 +166,7 @@ begin
       addr_dest            => addr_dest_s,
       inst_addr            => inst_addr_s,
       read_decoder         => read_decoder_s,
-      decoded_instruction  => decoded_instruction
+      decoded_instruction  => decoded_instruction_s
     );
     
   registers_bank_i : registers_bank
@@ -184,6 +201,8 @@ begin
         clk                   => clk,
         rst_n                 => rst_n,
         decoded_instruction   => decoded_instruction_s,
+        estado_atual          => estado_atual,
+        prox_estado           => prox_estado,
         halt                  => halt_s,
         select_data           => select_data_s,
         ula_op                => ula_op_s,
@@ -192,7 +211,10 @@ begin
         mem_write             => mem_write_s,
         mem_read              => mem_read_s,
         mem_access_inst       => mem_access_inst_s,
-        read_decoder          => read_decoder_s
+        read_decoder          => read_decoder_s,
+        is_jump               => is_jump_s,
+        is_branch             => is_branch_s,
+        is_beq                => is_beq_s
     );
  
 end rtl;
